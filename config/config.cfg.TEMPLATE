@@ -1,0 +1,18 @@
+
+version = "1.0"
+
+# The folder where to put temp data etc.
+tmp_folder = "/path/to/folder";
+
+app:
+{
+    send_port = 6869;
+    receive_port = 6870;
+};
+
+mediator:
+{
+    host = "localhost";
+    send_port = 7070;
+    receive_port = 7071;
+};
