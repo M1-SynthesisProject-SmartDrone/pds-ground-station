@@ -1,6 +1,6 @@
 # Ground Station
 
-This app is used to be the bridge between the Android application and the 
+This app is used to be the bridge between the Application application and the 
 drone interface, as well as handling the AI processes.
 
 ## Installation

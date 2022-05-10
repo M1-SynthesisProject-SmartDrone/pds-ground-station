@@ -1,14 +1,14 @@
 #ifndef __START_MESSAGERECEIVED_H__
 #define __START_MESSAGERECEIVED_H__
 
-#include "./Abstract_AndroidReceivedMessage.h"
+#include "./Abstract_ApplicationReceivedMessage.h"
 
 /**
  * Contains infos for launching drone
  *
  * @author Aldric Vitali Silvestre
  */
-struct Start_MessageReceived : Abstract_AndroidReceivedMessage
+struct Start_MessageReceived : Abstract_ApplicationReceivedMessage
 {
     bool startDrone;
 

@@ -15,7 +15,7 @@ Json_ToSendMessagesConverter::~Json_ToSendMessagesConverter()
 
 }
 
-std::string Json_ToSendMessagesConverter::convertToSendMessage(Abstract_AndroidToSendMessage* message)
+std::string Json_ToSendMessagesConverter::convertToSendMessage(Abstract_ApplicationToSendMessage* message)
 {
     try
     {
@@ -30,8 +30,8 @@ std::string Json_ToSendMessagesConverter::convertToSendMessage(Abstract_AndroidT
     }
 }
 
-std::function<nlohmann::json(Abstract_AndroidToSendMessage*)>
-Json_ToSendMessagesConverter::findConverter(Abstract_AndroidToSendMessage* message)
+std::function<nlohmann::json(Abstract_ApplicationToSendMessage*)>
+Json_ToSendMessagesConverter::findConverter(Abstract_ApplicationToSendMessage* message)
 {
     const auto messageTypeIterator = CONVERTER_PER_TYPE.find(message->messageType);
     if (messageTypeIterator != CONVERTER_PER_TYPE.end())

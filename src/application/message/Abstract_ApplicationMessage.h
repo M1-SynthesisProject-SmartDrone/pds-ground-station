@@ -5,9 +5,9 @@
 #include "MessageType.h"
 
 /**
- * All messages related to android inherit this struct
+ * All messages related to application inherit this struct
  */
-struct Abstract_AndroidMessage
+struct Abstract_ApplicationMessage
 {
     MESSAGE_TYPE messageType;
 

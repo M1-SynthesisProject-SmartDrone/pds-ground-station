@@ -1,14 +1,14 @@
 #ifndef __DRONEINFOS_MESSAGERECEIVED_H__
 #define __DRONEINFOS_MESSAGERECEIVED_H__
 
-#include "./Abstract_AndroidReceivedMessage.h"
+#include "./Abstract_ApplicationReceivedMessage.h"
 
 /**
  * The message sent in order to ask for drone position, status etc.
  *
  * @author Aldric Vitali Silvestre
  */
-struct DroneInfos_MessageReceived : Abstract_AndroidReceivedMessage
+struct DroneInfos_MessageReceived : Abstract_ApplicationReceivedMessage
 {
     DroneInfos_MessageReceived()
     {

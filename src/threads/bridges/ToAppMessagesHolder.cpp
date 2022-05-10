@@ -19,7 +19,7 @@ void ToAppMessagesHolder::waitForMessages()
     m_condition_variable.wait(lock, lambdaQueueFilled);
 }
 
-std::unique_ptr<Abstract_AndroidToSendMessage> ToAppMessagesHolder::pop()
+std::unique_ptr<Abstract_ApplicationToSendMessage> ToAppMessagesHolder::pop()
 {
     unique_lock<mutex> lock(m_lock);
     // Make the thread wait until we have one message 
@@ -30,7 +30,7 @@ std::unique_ptr<Abstract_AndroidToSendMessage> ToAppMessagesHolder::pop()
     return move(message);
 }
 
-std::unique_ptr<Abstract_AndroidToSendMessage> ToAppMessagesHolder::pop(int64_t timeoutMs)
+std::unique_ptr<Abstract_ApplicationToSendMessage> ToAppMessagesHolder::pop(int64_t timeoutMs)
 {
     if (timeoutMs <= 0)
     {
@@ -51,7 +51,7 @@ std::unique_ptr<Abstract_AndroidToSendMessage> ToAppMessagesHolder::pop(int64_t 
     }
 }
 
-std::unique_ptr<Abstract_AndroidToSendMessage> ToAppMessagesHolder::pop(int64_t timeoutMs, int64_t& timeRemainingMs)
+std::unique_ptr<Abstract_ApplicationToSendMessage> ToAppMessagesHolder::pop(int64_t timeoutMs, int64_t& timeRemainingMs)
 {
     if (timeoutMs <= 0)
     {
@@ -69,7 +69,7 @@ std::unique_ptr<Abstract_AndroidToSendMessage> ToAppMessagesHolder::pop(int64_t 
     return move(message);
 }
 
-void ToAppMessagesHolder::add(unique_ptr<Abstract_AndroidToSendMessage> message)
+void ToAppMessagesHolder::add(unique_ptr<Abstract_ApplicationToSendMessage> message)
 {
     unique_lock<mutex> lock(m_lock);
     m_messagesQueue.push(move(message));

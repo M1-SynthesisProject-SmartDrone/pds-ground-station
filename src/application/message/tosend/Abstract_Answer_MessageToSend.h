@@ -1,12 +1,12 @@
 #ifndef __ANSWER_MESSAGETOSEND_H__
 #define __ANSWER_MESSAGETOSEND_H__
 
-#include "Abstract_AndroidToSendMessage.h"
+#include "Abstract_ApplicationToSendMessage.h"
 
 /**
  * This is another abstract class to simplify writing simple validation messages
  */
-struct Abstract_Answer_MessageToSend : Abstract_AndroidToSendMessage
+struct Abstract_Answer_MessageToSend : Abstract_ApplicationToSendMessage
 {
     bool validated;
     std::string message;

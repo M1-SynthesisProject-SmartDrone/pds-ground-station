@@ -7,12 +7,12 @@
 
 #include <nlohmann/json.hpp>
 
-#include "android/message/received/Abstract_AndroidReceivedMessage.h"
-#include "android/message/received/Ack_MessageReceived.h"
-#include "android/message/received/Start_MessageReceived.h"
-#include "android/message/received/Record_MessageReceived.h"
-#include "android/message/received/Manual_MessageReceived.h"
-#include "android/message/received/DroneInfos_MessageReceived.h"
+#include "application/message/received/Abstract_ApplicationReceivedMessage.h"
+#include "application/message/received/Ack_MessageReceived.h"
+#include "application/message/received/Start_MessageReceived.h"
+#include "application/message/received/Record_MessageReceived.h"
+#include "application/message/received/Manual_MessageReceived.h"
+#include "application/message/received/DroneInfos_MessageReceived.h"
 
 class Json_ReceivedMessagesConverter
 {
@@ -23,7 +23,7 @@ private:
     Manual_MessageReceived* parseManualRequest(nlohmann::json& obj);
     DroneInfos_MessageReceived* parseDroneInfosRequest(nlohmann::json& obj);
 
-    std::function<Abstract_AndroidReceivedMessage*(nlohmann::json&)> 
+    std::function<Abstract_ApplicationReceivedMessage*(nlohmann::json&)> 
         findMessageConverterFunc(nlohmann::json& document);
 
     /**
@@ -34,7 +34,7 @@ private:
         std::string,
         // This is a bit long, but it is better not to throw aliases in header files
         // And yes, lambdas are a bit ugly in c++, but safier than raw function pointers (and std::bind)
-        std::function<Abstract_AndroidReceivedMessage*(nlohmann::json&)>
+        std::function<Abstract_ApplicationReceivedMessage*(nlohmann::json&)>
         > CONVERTER_FROM_STR {
         {"ACK", [this](auto content) {return parseAckRequest(content);}},
         {"START_DRONE", [this](auto content) {return parseStartRequest(content);}},
@@ -46,7 +46,7 @@ public:
     Json_ReceivedMessagesConverter();
     ~Json_ReceivedMessagesConverter();
 
-    Abstract_AndroidReceivedMessage* convertMessageReceived(std::string message);
+    Abstract_ApplicationReceivedMessage* convertMessageReceived(std::string message);
 };
 
 #endif // __JSON_RECIVEDMESSAGESCONVERTER_H__

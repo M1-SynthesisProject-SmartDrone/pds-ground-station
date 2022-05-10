@@ -1,13 +1,13 @@
 #ifndef __ABSTRACT_ANDROIDTOSENDMESSAGE_H__
 #define __ABSTRACT_ANDROIDTOSENDMESSAGE_H__
 
-#include "android/message/Abstract_AndroidMessage.h"
+#include "application/message/Abstract_ApplicationMessage.h"
 
-struct Abstract_AndroidToSendMessage : Abstract_AndroidMessage
+struct Abstract_ApplicationToSendMessage : Abstract_ApplicationMessage
 {
     virtual std::string toString()
     {
-        return "Abstract_AndroidToSendMessage";
+        return "Abstract_ApplicationToSendMessage";
     }
 };
 

@@ -2,13 +2,13 @@
 #define __DRONE_MESSAGETOSEND_H__
 
 
-#include "Abstract_AndroidToSendMessage.h"
+#include "Abstract_ApplicationToSendMessage.h"
 
 /**
  * A message sent periodically to the app in order to update drone infos on the UI.
  * @author Aldric Vitali Silvestre
  */
-struct DroneInfos_MessageToSend : Abstract_AndroidToSendMessage
+struct DroneInfos_MessageToSend : Abstract_ApplicationToSendMessage
 {
     bool isArmed;
 

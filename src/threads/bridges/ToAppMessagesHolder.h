@@ -9,7 +9,7 @@
 
 #include <loguru/loguru.hpp>
 
-#include "android/message/tosend/Abstract_AndroidToSendMessage.h"
+#include "application/message/tosend/Abstract_ApplicationToSendMessage.h"
 
 /**
  * Thread-safe class containing a queue of messages to send to the application.
@@ -20,7 +20,7 @@ class ToAppMessagesHolder
 private:
     std::mutex m_lock;
     std::condition_variable m_condition_variable;
-    std::queue<std::unique_ptr<Abstract_AndroidToSendMessage>> m_messagesQueue;
+    std::queue<std::unique_ptr<Abstract_ApplicationToSendMessage>> m_messagesQueue;
 
     // The predicate (lambda function) used in condition_variables "wait" and "wait_for" functions.
     const std::function<bool()> lambdaQueueFilled = [=] { return !isQueueEmpty(); };
@@ -37,16 +37,16 @@ public:
      */
     void waitForMessages();
 
-    std::unique_ptr<Abstract_AndroidToSendMessage> pop();
+    std::unique_ptr<Abstract_ApplicationToSendMessage> pop();
     /**
      * Can return nullptr (if timeout exceeded)
      */
-    std::unique_ptr<Abstract_AndroidToSendMessage> pop(int64_t timeoutMs);
+    std::unique_ptr<Abstract_ApplicationToSendMessage> pop(int64_t timeoutMs);
     /**
      * Can return nullptr (if timeout exceeded)
      */
-    std::unique_ptr<Abstract_AndroidToSendMessage> pop(int64_t timeoutMs, int64_t& timeRemainingMs);
-    void add(std::unique_ptr<Abstract_AndroidToSendMessage> message);
+    std::unique_ptr<Abstract_ApplicationToSendMessage> pop(int64_t timeoutMs, int64_t& timeRemainingMs);
+    void add(std::unique_ptr<Abstract_ApplicationToSendMessage> message);
 };
 
 #endif // __TOSENDMESSAGESHOLDER_H__

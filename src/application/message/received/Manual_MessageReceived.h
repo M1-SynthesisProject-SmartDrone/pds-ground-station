@@ -1,7 +1,7 @@
 #ifndef __ANDROIDRECEIVEDMESSAGE_H__
 #define __ANDROIDRECEIVEDMESSAGE_H__
 
-#include "./Abstract_AndroidReceivedMessage.h"
+#include "./Abstract_ApplicationReceivedMessage.h"
 
 /**
  * Contains infos for manual control.
@@ -10,7 +10,7 @@
  *
  * @author Aldric Vitali Silvestre
  */
-struct Manual_MessageReceived : Abstract_AndroidReceivedMessage
+struct Manual_MessageReceived : Abstract_ApplicationReceivedMessage
 {
     double leftMove;
     double leftRotation;

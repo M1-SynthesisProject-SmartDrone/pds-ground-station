@@ -9,7 +9,7 @@ Json_ReceivedMessagesConverter::Json_ReceivedMessagesConverter() {}
 
 Json_ReceivedMessagesConverter::~Json_ReceivedMessagesConverter() {}
 
-Abstract_AndroidReceivedMessage* Json_ReceivedMessagesConverter::convertMessageReceived(std::string message)
+Abstract_ApplicationReceivedMessage* Json_ReceivedMessagesConverter::convertMessageReceived(std::string message)
 {
     try
     {
@@ -17,7 +17,7 @@ Abstract_AndroidReceivedMessage* Json_ReceivedMessagesConverter::convertMessageR
 
         auto messageConverterFunc = findMessageConverterFunc(document);
 
-        Abstract_AndroidReceivedMessage* converted;
+        Abstract_ApplicationReceivedMessage* converted;
         if (!document["content"].is_object())
         {
             throw invalid_argument("No content object found");
@@ -76,7 +76,7 @@ Manual_MessageReceived* Json_ReceivedMessagesConverter::parseManualRequest(nlohm
     };
 }
 
-std::function<Abstract_AndroidReceivedMessage* (nlohmann::json&)>
+std::function<Abstract_ApplicationReceivedMessage* (nlohmann::json&)>
 Json_ReceivedMessagesConverter::findMessageConverterFunc(nlohmann::json& document)
 {
     if (document.contains("type"))

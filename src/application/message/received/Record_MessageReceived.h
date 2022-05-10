@@ -2,14 +2,14 @@
 #define __RECORD_MESSAGERECEIVED_H__
 
 
-#include "./Abstract_AndroidReceivedMessage.h"
+#include "./Abstract_ApplicationReceivedMessage.h"
 
 /**
  * Contains infos for launching drone
  *
  * @author Aldric Vitali Silvestre
  */
-struct Record_MessageReceived : Abstract_AndroidReceivedMessage
+struct Record_MessageReceived : Abstract_ApplicationReceivedMessage
 {
     bool record;
 

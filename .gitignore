@@ -74,10 +74,10 @@ proguard/
 # Log Files
 *.log
 
-# Android Studio Navigation editor temp files
+# Application Studio Navigation editor temp files
 .navigation/
 
-# Android Studio captures folder
+# Application Studio captures folder
 captures/
 
 # IntelliJ
@@ -89,7 +89,7 @@ captures/
 .idea/dictionaries
 .idea/libraries
 .idea/jarRepositories.xml
-# Android Studio 3 in .gitignore file.
+# Application Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
@@ -100,7 +100,7 @@ captures/
 #*.jks
 #*.keystore
 
-# External native build folder generated in Android Studio 2.2 and later
+# External native build folder generated in Application Studio 2.2 and later
 .externalNativeBuild
 .cxx/
 
@@ -129,5 +129,5 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-# Android Profiling
+# Application Profiling
 *.hprof
