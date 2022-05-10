@@ -3,6 +3,10 @@
 
 #include "application/network/ApplicationMediator.h"
 
+#include "application/message/received/Record_MessageReceived.h"
+#include "application/message/received/Manual_MessageReceived.h"
+#include "application/message/received/Start_MessageReceived.h"
+
 /**
  * The main class that will handle everything in the server
  */
@@ -10,9 +14,14 @@ class GroundStation
 {
 private:
     bool m_isRunning = true;
-
     std::unique_ptr<ApplicationMediator> m_applicationMediator;
 
+    void handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMessage> message);
+    void handleAckMessage();
+    void handleDroneInfosMessage();
+    void handleRecordMessage(Record_MessageReceived* message);
+    void handleStartDroneMessage(Start_MessageReceived* message);
+    void handleManualControlMessage(Manual_MessageReceived* message);
 public:
     GroundStation(
         std::unique_ptr<ApplicationMediator> applicationMediator

@@ -13,6 +13,8 @@
             ==> Un seul thread demande moins d'opérations à faire cependant, on sera plus rapide qu'en séparant en 2 threads
             ==> Les opérations "génantes" (arm, record, pilotage auto) sont des commandes ou il ne faut pas faire trop autre chose à côté
             ==> De toute façon les réponses viendront dans l'ordre aussi
+    - On lance un record
+        -> Peut être un thread à part pour le record
     - On choisit un trajet et le lance
         -> On va devoir lancer un autre thread pour gérer ça et éviter de perdre la communication avec l'app mobile
 
