@@ -1,5 +1,7 @@
 #include "network/UDPSocket.h"
 
+#include <iostream>
+
 using namespace std;
 
 UDPSocket::UDPSocket()
@@ -51,7 +53,7 @@ void UDPSocket::sendMessage(const std::string &ipAddress, uint16_t port, const c
 int UDPSocket::receiveMessage(char *buffer, int bufferLength, sockaddr_in& sender, int flags)
 {
     socklen_t size = sizeof(sender);
-    int bytesRead  = recvfrom(m_socket, buffer, bufferLength, flags, (struct sockaddr *)&sender, &size) < 0;
+    int bytesRead  = recvfrom(m_socket, buffer, bufferLength, flags, (struct sockaddr *)&sender, &size);
     if(bytesRead  < 0)
     {
         throw system_error(errno, system_category(), "Cannot receive message");

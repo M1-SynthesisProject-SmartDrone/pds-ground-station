@@ -32,6 +32,8 @@ std::unique_ptr<Abstract_ApplicationReceivedMessage> ApplicationMediator::receiv
         LOG_F(ERROR, "Received bigger message than buffer could handle, message truncated");
     }
 
-    auto convertedMessage = m_converter->convertMessageReceived(string(buffer));
+    cout << bytesRead << ":" << string(buffer, bytesRead) << endl;
+
+    auto convertedMessage = m_converter->convertMessageReceived(string(buffer, bytesRead));
     return unique_ptr<Abstract_ApplicationReceivedMessage>(convertedMessage);
 }
