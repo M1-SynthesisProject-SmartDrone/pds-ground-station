@@ -32,20 +32,30 @@ ConfigParams ConfigParser::parse()
 
     config.readFile(m_confFilePath.c_str());
 
-    const libconfig::Setting& root = config.getRoot();
+    const auto& root = config.getRoot();
     auto globalConfig = ConfigGlobal{
         root.lookup("tmp_folder")
     };
 
-    const libconfig::Setting& appSettings = root["app"];
+    const auto& appSettings = root["app"];
     auto appConfig = ConfigApp{
         appSettings["send_port"],
         appSettings["receive_port"]
     };
+
+    const auto& mediatorSettings = root["mediator"];
+    auto mediatorConfig = ConfigMediator{
+        mediatorSettings["host"],
+        mediatorSettings["main"]["send_port"],
+        mediatorSettings["main"]["receive_port"],
+        mediatorSettings["secondary"]["send_port"],
+        mediatorSettings["secondary"]["receive_port"]
+    };
     
     return ConfigParams(
         globalConfig,
-        appConfig
+        appConfig,
+        mediatorConfig
     );
 }
 

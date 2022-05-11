@@ -13,6 +13,14 @@ app:
 mediator:
 {
     host = "localhost";
-    send_port = 7070;
-    receive_port = 7071;
+    main: 
+    {
+        send_port = 7000;
+        receive_port = 7001;
+    };
+    secondary:
+    {
+        send_port = 7002;
+        receive_port = 7003;
+    }
 };

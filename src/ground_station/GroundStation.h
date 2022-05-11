@@ -2,6 +2,7 @@
 #define __GROUNDSTATION_H__
 
 #include "application/network/ApplicationMediator.h"
+#include "drone/DroneCommunicator.h"
 
 #include "application/message/received/Record_MessageReceived.h"
 #include "application/message/received/Manual_MessageReceived.h"

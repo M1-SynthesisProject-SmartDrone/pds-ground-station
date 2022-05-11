@@ -16,6 +16,7 @@
 #include "ground_station/GroundStation.h"
 #include "application/network/ApplicationMediator.h"
 #include "application/converter/Json_ApplicationMessageConverter.h"
+#include "drone/DroneCommunicator.h"
 
 using namespace std;
 
@@ -43,8 +44,10 @@ int main(int argc, char* argv[])
         move(messageConverter)
     );
     
+    auto droneCommunicator = make_unique<DroneCommunicator>();
     GroundStation groundStation(
-        move(androidMediator)
+        move(androidMediator),
+        move(droneCommunicator)
     );
 
     groundStation.run();
