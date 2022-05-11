@@ -15,6 +15,7 @@ class GroundStation
 private:
     bool m_isRunning = true;
     std::unique_ptr<ApplicationMediator> m_applicationMediator;
+    std::unique_ptr<DroneCommunicator> m_droneCommunicator;
 
     void handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMessage> message);
     void handleAckMessage();
@@ -24,7 +25,8 @@ private:
     void handleManualControlMessage(Manual_MessageReceived* message);
 public:
     GroundStation(
-        std::unique_ptr<ApplicationMediator> applicationMediator
+        std::unique_ptr<ApplicationMediator> applicationMediator,
+        std::unique_ptr<DroneCommunicator> droneCommunicator
     );
     ~GroundStation();
 

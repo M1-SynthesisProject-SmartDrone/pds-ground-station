@@ -15,6 +15,8 @@
             ==> De toute façon les réponses viendront dans l'ordre aussi
     - On lance un record
         -> Peut être un thread à part pour le record
+            ==> Le thread ferait toutes les X ms une capture de l'image, des données du drone etc.
+            ==> Il enverrait les données au médiateur dans le même temps
     - On choisit un trajet et le lance
         -> On va devoir lancer un autre thread pour gérer ça et éviter de perdre la communication avec l'app mobile
 

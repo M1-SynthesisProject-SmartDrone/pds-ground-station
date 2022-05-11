@@ -2,15 +2,20 @@
 
 #include <loguru/loguru.hpp>
 
-#include "application/message/received/Manual_MessageReceived.h"
-#include "application/message/received/Start_MessageReceived.h""
-#include "application/message/received/Record_MessageReceived.h""
+#include "drone/DroneCommunicator.h"
+
+#include "application/message/received/recevied_headers.h"
+#include "application/message/tosend/toSend_headers.h"
 
 using namespace std;
 
-GroundStation::GroundStation(std::unique_ptr<ApplicationMediator> applicationMediator)
+GroundStation::GroundStation(
+    std::unique_ptr<ApplicationMediator> applicationMediator,
+    std::unique_ptr<DroneCommunicator> droneCommunicator
+)
 {
     m_applicationMediator = move(applicationMediator);
+    m_droneCommunicator = move(droneCommunicator);
 }
 
 GroundStation::~GroundStation()
@@ -67,26 +72,52 @@ void GroundStation::handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMe
     }
 }
 
-// TODO
 void GroundStation::handleAckMessage()
 {
-
+    m_applicationMediator->sendMessage(make_unique<Ack_MessageToSend>(true));
 }
+
 void GroundStation::handleDroneInfosMessage()
 {
-
+    // TODO handle record
+    bool isInRecordState = false;
+    m_applicationMediator->sendMessage(m_droneCommunicator->fetchDroneInfos(isInRecordState));
 }
+
 void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 {
 
 }
+
 void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)
 {
-
+    try
+    {
+        m_droneCommunicator->arm();
+        m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(true));
+    }
+    catch(const std::exception& e)
+    {
+        LOG_F(ERROR, "Error while handling arm command : %s", e.what());
+        m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(false, "Error while handling arm command"));
+    }
 }
+
 void GroundStation::handleManualControlMessage(Manual_MessageReceived* message)
 {
-
+    try
+    {
+        m_droneCommunicator->control(
+            message->leftMove,
+            message->forwardMove,
+            message->motorPower,
+            message->leftRotation
+        );
+    }
+    catch(const std::exception& e)
+    {
+        LOG_F(ERROR, "Error while handling manual control command : %s", e.what());
+    }
 }
 
 void GroundStation::askStopRunning()
