@@ -31,9 +31,9 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertResponse(std::strin
 
 MEDIATOR_MESSAGE_TYPE MediatorResponseConverter::findMessageType(nlohmann::json& document)
 {
-    if (document.contains("type"))
+    if (document.contains("requestType"))
     {
-        string typeStr = document["type"];
+        string typeStr = document["requestType"];
         const auto messageTypeIterator = TYPE_FROM_STR.find(typeStr);
         if (messageTypeIterator != TYPE_FROM_STR.end())
         {

@@ -7,6 +7,7 @@
 #include "network/HostUdpSocket.h"
 #include "mediator/messages/requests/Abstract_MediatorRequest.h"
 #include "mediator/messages/responses/Abstract_MediatorResponse.h"
+#include "mediator/converter/MediatorResponseConverter.h"
 
 /**
  * Base class for a channel (request / response from the communicator)
@@ -15,6 +16,7 @@ class MediatorChannel
 {
 private:
     std::unique_ptr<HostUdpSocket> m_socket;
+    MediatorResponseConverter m_converter;    
 
 public:
     MediatorChannel(std::string host, uint16_t listenPort, uint16_t sendPort);

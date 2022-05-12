@@ -21,11 +21,10 @@ private:
     MEDIATOR_MESSAGE_TYPE findMessageType(nlohmann::json& document);
 
     Abstract_MediatorResponse* convertFromMessageType(nlohmann::json& document, MEDIATOR_MESSAGE_TYPE messageType);
-    // TODO
 
     const std::unordered_map<std::string, MEDIATOR_MESSAGE_TYPE> TYPE_FROM_STR {
-        {"RESP_ACK", MEDIATOR_MESSAGE_TYPE::RESP_ACK},
-        {"RESP_RECORD", MEDIATOR_MESSAGE_TYPE::RESP_RECORD}
+        {"RESP_TR_SAVE", MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE},
+        {"RESP_END_TR_SAVE", MEDIATOR_MESSAGE_TYPE::RESP_END_TR_SAVE}
     };
 };
 

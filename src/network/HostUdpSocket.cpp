@@ -33,7 +33,7 @@ int HostUdpSocket::receive(char* buffer, int bufferLength, int flags)
     return UDPSocket::receiveMessage(buffer, bufferLength, sender, flags);
 }
 
-void HostUdpSocket::send(const char* msg, int msgLength, int flags = 0)
+void HostUdpSocket::send(const char* msg, int msgLength, int flags)
 {
     sockaddr_in destination;
     destination.sin_family = AF_INET;
@@ -53,7 +53,7 @@ string HostUdpSocket::receive(int flags)
     return string(buffer, nbBytes);
 }
 
-void HostUdpSocket::send(string message, int flags = 0)
+void HostUdpSocket::send(string message, int flags)
 {
     send(message.c_str(), message.size());
 }
