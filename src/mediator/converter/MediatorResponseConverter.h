@@ -7,7 +7,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "mediator/messages/responses/Abstract_MediatorResponse.h"
+#include "mediator/messages/responses/mediator_response_headers.h"
 
 class MediatorResponseConverter
 {
@@ -21,6 +21,8 @@ private:
     MEDIATOR_MESSAGE_TYPE findMessageType(nlohmann::json& document);
 
     Abstract_MediatorResponse* convertFromMessageType(nlohmann::json& document, MEDIATOR_MESSAGE_TYPE messageType);
+    TrSave_MediatorResponse* convertTrSave(nlohmann::json& document);
+    TrEndSave_MediatorResponse* convertTrEndSave(nlohmann::json& document);
 
     const std::unordered_map<std::string, MEDIATOR_MESSAGE_TYPE> TYPE_FROM_STR {
         {"RESP_TR_SAVE", MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE},

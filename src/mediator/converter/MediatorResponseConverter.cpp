@@ -19,7 +19,7 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertResponse(std::strin
     {
         auto document = nlohmann::json::parse(message);
         MEDIATOR_MESSAGE_TYPE messageType = findMessageType(document);
-        return nullptr;
+        return convertFromMessageType(document, messageType);
     }
     catch (exception& e)
     {
@@ -50,4 +50,30 @@ MEDIATOR_MESSAGE_TYPE MediatorResponseConverter::findMessageType(nlohmann::json&
     {
         throw runtime_error("Cannot find type in request object");
     }
+}
+
+Abstract_MediatorResponse* MediatorResponseConverter::convertFromMessageType(nlohmann::json& document, MEDIATOR_MESSAGE_TYPE messageType)
+{
+    switch (messageType)
+    {
+    case RESP_TR_SAVE:
+        return convertTrSave(document);
+        break;
+    case RESP_END_TR_SAVE:
+        return convertTrEndSave(document);
+        break;
+    default:
+        throw runtime_error("Cannot find converter for message type " + messageType);
+        break;
+    }
+}
+
+TrSave_MediatorResponse* MediatorResponseConverter::convertTrSave(nlohmann::json& document)
+{
+    return new TrSave_MediatorResponse(document["isLaunched"]);
+}
+
+TrEndSave_MediatorResponse* MediatorResponseConverter::convertTrEndSave(nlohmann::json& document)
+{
+    return new TrEndSave_MediatorResponse(document["isLaunched"]);
 }
