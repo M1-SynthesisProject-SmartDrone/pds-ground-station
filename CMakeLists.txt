@@ -62,17 +62,17 @@ message("- Checking : Curses")
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 
+message("- Checking : OpenCV")
+find_package( OpenCV REQUIRED )
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 ######################################################################################################
 ###                                            LINKS                                                ##
 ######################################################################################################
 
 link_libraries(
-    # ${CXXOPTS_LIB}
+    ${OpenCV_LIBS}
     ${BL_LIBRARIES}
-    # ${MAVLINK_LIB}
-    # ${LOGURU_LIB}
-    # ${CURSES_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     dl
     config++

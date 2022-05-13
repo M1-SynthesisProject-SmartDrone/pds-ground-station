@@ -72,6 +72,19 @@ namespace pdsChannels
      */
     extern blc_channel battery;
 
+    /**
+     * The image captured by the camera, stored in a unsigned char 
+     * array of size 4mb
+     */
+    extern blc_channel image;
+    
+    /**
+     * 3 uint32 field containing the resolution of the image :
+     *   - number of rows 
+     *   - number of cols
+     *   - buffer size
+     */
+    extern blc_channel imageSize;
 }
 
 

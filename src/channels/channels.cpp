@@ -13,4 +13,6 @@ namespace pdsChannels
     blc_channel localPositionNed("/pdsDrone.sensors.local_position", BLC_CHANNEL_READ);
     blc_channel globalPosition("/pdsDrone.sensors.global_position", BLC_CHANNEL_READ);
     blc_channel battery("/pdsDrone.sensors.battery", BLC_CHANNEL_READ);
+    blc_channel image("/pdsDrone.camera.image", BLC_CHANNEL_READ);
+    blc_channel imageSize("/pdsDrone.camera.image_size", BLC_CHANNEL_READ);
 }

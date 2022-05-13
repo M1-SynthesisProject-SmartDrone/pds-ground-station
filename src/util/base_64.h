@@ -3,7 +3,7 @@
 
 #include <string>
 
-std::string encode_base64(unsigned char* buffer, unsigned int bufferLength);
+std::string encode_base64(unsigned char* buffer, uint32_t bufferLength);
 
 std::string decode_base64(std::string str);
 

@@ -11,12 +11,16 @@
 #include <signal.h>
 
 #include <loguru/loguru.hpp>
+#include <opencv2/opencv.hpp>
 
 #include "config/ConfigParser.h"
 #include "ground_station/GroundStation.h"
 #include "application/network/ApplicationMediator.h"
 #include "application/converter/Json_ApplicationMessageConverter.h"
 #include "drone/DroneCommunicator.h"
+
+#include "channels/channels.h"
+#include "util/base_64.h"
 
 using namespace std;
 
@@ -51,6 +55,26 @@ int main(int argc, char* argv[])
     );
 
     groundStation.run();
+
+    // Test for getting and displaying the image in blc_channels
+    // auto imgBuffer = pdsChannels::image.uchars;
+    // auto rows = pdsChannels::imageSize.uints32[0];
+    // auto cols = pdsChannels::imageSize.uints32[1];
+    // auto imgSize = pdsChannels::imageSize.uints32[2];
+
+    // string encoded = encode_base64(imgBuffer, imgSize);
+    // string decoded = decode_base64(encoded);
+
+    // cv::Mat img(rows, cols, CV_8UC3, decoded.data());
+    // cout << img.cols << " == " << img.rows << "\n";
+
+    // cv::imshow("fenetre", img);
+    // cv::waitKey(0);
+
+    // auto imageBuffer = pdsChannels::image.uchars;
+    // const uint32_t bufferLength = pdsChannels::imageSize.uints32[0];
+    // string encodedImage = encode_base64(imageBuffer, bufferLength);
+    // cout << encodedImage << endl;
 
     LOG_F(INFO, "End of ground station server");
     return EXIT_SUCCESS;

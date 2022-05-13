@@ -86,17 +86,25 @@ void GroundStation::handleDroneInfosMessage()
 
 void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 {
-
+    
 }
 
 void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)
 {
     try
     {
-        m_droneCommunicator->arm();
-        m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(true));
+        if (message->startDrone)
+        {
+            m_droneCommunicator->arm();
+            m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(true));
+        }
+        else
+        {
+            m_droneCommunicator->disarm();
+            m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(true));
+        }
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         LOG_F(ERROR, "Error while handling arm command : %s", e.what());
         m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(false, "Error while handling arm command"));
@@ -114,7 +122,7 @@ void GroundStation::handleManualControlMessage(Manual_MessageReceived* message)
             message->leftRotation
         );
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         LOG_F(ERROR, "Error while handling manual control command : %s", e.what());
     }

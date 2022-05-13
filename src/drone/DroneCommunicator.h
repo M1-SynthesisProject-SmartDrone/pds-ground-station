@@ -4,6 +4,7 @@
 #include "memory"
 
 #include "application/message/tosend/DroneInfos_MessageToSend.h"
+#include "mediator/messages/requests/TrRegister_MediatorRequest.h"
 
 /**
  * This class is used to simply make contact with the drone
@@ -18,8 +19,10 @@ public:
 
     // ==== ACCESSORS ====
     bool isArmed();
+
     std::unique_ptr<DroneInfos_MessageToSend> fetchDroneInfos(bool isRecording);
     
+    std::unique_ptr<TrRegister_MediatorRequest> fetchRegisterData(bool isCheckpoint);
 
     // ==== OPERATIONS ON DRONE ====
 
@@ -28,6 +31,7 @@ public:
      * The operation is considered a failure if the timeout is exeeded.
      */
     void arm(int timeoutMs = 1000);
+    void disarm(int timeoutMs = 1000);
     
     /**
      * Set the commands for the drone to fly, as with a joystick

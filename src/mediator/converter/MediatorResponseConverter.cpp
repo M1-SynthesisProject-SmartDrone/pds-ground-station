@@ -19,6 +19,7 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertResponse(std::strin
     {
         auto document = nlohmann::json::parse(message);
         MEDIATOR_MESSAGE_TYPE messageType = findMessageType(document);
+        return nullptr;
     }
     catch (exception& e)
     {
