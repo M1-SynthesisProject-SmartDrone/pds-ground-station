@@ -1,8 +1,9 @@
 #ifndef __MEDIATORMAINCOMMUNICATOR_H__
 #define __MEDIATORMAINCOMMUNICATOR_H__
 
-
-#include <string>
+#include "mediator/MediatorChannel.h"
+#include "mediator/messages/requests/mediator_request_headers.h"
+#include "mediator/messages/responses/mediator_response_headers.h"
 
 /**
  * This communicator is responsible to send request and receive responses
@@ -11,14 +12,18 @@
 class MediatorMainCommunicator
 {
 private:
+    MediatorChannel m_channel;
+    std::string m_currentTripName;
     
 public:
     MediatorMainCommunicator(std::string host, uint16_t listenPort, uint16_t sendPort);
     ~MediatorMainCommunicator();
 
-    void startRecord();
+    std::unique_ptr<TrSave_MediatorResponse> startRecord();
     
-    void endRecord();
+    void registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest);
+
+    std::unique_ptr<TrEndSave_MediatorResponse> endRecord();
 };
 
 #endif // __MEDIATORMAINCOMMUNICATOR_H__

@@ -10,9 +10,10 @@
 using namespace std;
 
 GroundStation::GroundStation(
+    ConfigParams params,
     std::unique_ptr<ApplicationMediator> applicationMediator,
-    std::unique_ptr<DroneCommunicator> droneCommunicator
-)
+    std::shared_ptr<DroneCommunicator> droneCommunicator
+): m_params(params)
 {
     m_applicationMediator = move(applicationMediator);
     m_droneCommunicator = move(droneCommunicator);
@@ -79,14 +80,28 @@ void GroundStation::handleAckMessage()
 
 void GroundStation::handleDroneInfosMessage()
 {
-    // TODO handle record
-    bool isInRecordState = false;
-    m_applicationMediator->sendMessage(m_droneCommunicator->fetchDroneInfos(isInRecordState));
+    m_applicationMediator->sendMessage(m_droneCommunicator->fetchDroneInfos(m_inRecordState));
 }
 
 void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 {
-    
+    if (message->record == m_inRecordState)
+    {
+        m_applicationMediator->sendMessage(make_unique<Record_MessageToSend>(false, "Already in wanted record state"));
+        return;
+    }
+
+    if (message->record)
+    {
+        // Send the command and start the thread
+        
+        m_inRecordState = true;
+    }
+    else
+    {
+
+        m_inRecordState = false;
+    }
 }
 
 void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)

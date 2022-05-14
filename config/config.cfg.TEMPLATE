@@ -10,6 +10,14 @@ app:
     receive_port = 6870;
 };
 
+path_register:
+{
+    # Frequence in Hz
+    save_frequency = 10;
+    # The frequency of checkpoints
+    saves_between_checkpoints = 50; # 5 seconds
+};
+
 mediator:
 {
     host = "localhost";

@@ -51,11 +51,18 @@ ConfigParams ConfigParser::parse()
         mediatorSettings["secondary"]["send_port"],
         mediatorSettings["secondary"]["receive_port"]
     };
-    
+
+    const auto& pathRegisterParams = root["path_register"];
+    auto pathRegisterConfig = ConfigPathRegister{
+        pathRegisterParams["save_frequency"],
+        pathRegisterParams["saves_between_checkpoints"]
+    };
+
     return ConfigParams(
         globalConfig,
         appConfig,
-        mediatorConfig
+        mediatorConfig,
+        pathRegisterConfig
     );
 }
 

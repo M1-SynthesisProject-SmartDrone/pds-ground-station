@@ -13,6 +13,12 @@ struct ConfigApp
     int receivePort;
 };
 
+struct ConfigPathRegister
+{
+    int saveFrequency;
+    int savesBetweenCheckpoints;
+};
+
 struct ConfigMediator
 {
     std::string host;
@@ -27,15 +33,17 @@ struct ConfigMediator
  */
 struct ConfigParams
 {
-    ConfigGlobal globalParams;
-    ConfigApp appParams;
-    ConfigMediator mediatorParams;
+    ConfigGlobal global;
+    ConfigApp app;
+    ConfigMediator mediator;
+    ConfigPathRegister pathRegister;
 
-    ConfigParams(ConfigGlobal global, ConfigApp app, ConfigMediator mediator)
+    ConfigParams(ConfigGlobal global, ConfigApp app, ConfigMediator mediator, ConfigPathRegister pathRegister)
     {
-        this->globalParams = global;
-        this->appParams = app;
-        this->mediatorParams = mediator;
+        this->global = global;
+        this->app = app;
+        this->mediator = mediator;
+        this->pathRegister = pathRegister;
     }
 };
 

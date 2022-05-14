@@ -27,3 +27,17 @@ unique_ptr<Abstract_MediatorResponse> MediatorChannel::sendAndReceive(unique_ptr
     sendRequest(move(request));
     return receiveResponse();
 }
+
+unique_ptr<Abstract_MediatorResponse> MediatorChannel::sendAndReceive(
+    std::unique_ptr<Abstract_MediatorRequest> request, 
+    MEDIATOR_MESSAGE_TYPE wantedResponseType)
+{
+    auto response = sendAndReceive(move(request));
+    if (response->messageType != wantedResponseType)
+    {
+        stringstream ss;
+        ss << "Invalid response type : wanted " << wantedResponseType << "but got " << response->messageType;
+        throw runtime_error(ss.str());
+    }
+    return move(response);
+}

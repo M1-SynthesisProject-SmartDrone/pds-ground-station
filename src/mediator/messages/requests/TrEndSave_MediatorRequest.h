@@ -1,5 +1,5 @@
-#ifndef __TRSAVE_MEDIATORREQUEST_H__
-#define __TRSAVE_MEDIATORREQUEST_H__
+#ifndef __TRENDSAVE_MEDIATORREQUEST_H__
+#define __TRENDSAVE_MEDIATORREQUEST_H__
 
 #include "Abstract_MediatorRequest.h"
 
@@ -26,5 +26,4 @@ struct TrEndSave_MediatorRequest : Abstract_MediatorRequest
     }
 };
 
-
-#endif // __TRSAVE_MEDIATORREQUEST_H__
+#endif // __TRENDSAVE_MEDIATORREQUEST_H__

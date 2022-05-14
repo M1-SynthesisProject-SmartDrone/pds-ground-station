@@ -10,7 +10,7 @@
 #include "mediator/converter/MediatorResponseConverter.h"
 
 /**
- * Base class for a channel (request / response from the communicator)
+ * Permits to handle request and responses from the comminucator.
  */
 class MediatorChannel
 {
@@ -25,6 +25,15 @@ public:
     void sendRequest(std::unique_ptr<Abstract_MediatorRequest> request);
     std::unique_ptr<Abstract_MediatorResponse> receiveResponse();
     std::unique_ptr<Abstract_MediatorResponse> sendAndReceive(std::unique_ptr<Abstract_MediatorRequest> request);
+    
+    /**
+     * This is a simple wrapper of sendAndReceive that will throw an exception
+     * if the wanted response type is not the same
+     */
+    std::unique_ptr<Abstract_MediatorResponse> sendAndReceive(
+        std::unique_ptr<Abstract_MediatorRequest> request, 
+        MEDIATOR_MESSAGE_TYPE wantedResponseType
+    );
 };
 
 #endif // __MEDIATORCHANNEL_H__

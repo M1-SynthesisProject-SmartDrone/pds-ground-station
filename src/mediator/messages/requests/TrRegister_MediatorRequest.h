@@ -1,5 +1,5 @@
-#ifndef __TRSAVE_MEDIATORREQUEST_H__
-#define __TRSAVE_MEDIATORREQUEST_H__
+#ifndef __TRREGISTER_MEDIATORREQUEST_H__
+#define __TRREGISTER_MEDIATORREQUEST_H__
 
 #include "Abstract_MediatorRequest.h"
 
@@ -43,4 +43,4 @@ struct TrRegister_MediatorRequest : Abstract_MediatorRequest
     }
 };
 
-#endif // __TRSAVE_MEDIATORREQUEST_H__
+#endif // __TRREGISTER_MEDIATORREQUEST_H__

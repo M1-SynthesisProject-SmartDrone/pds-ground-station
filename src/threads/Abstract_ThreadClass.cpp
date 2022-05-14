@@ -58,6 +58,7 @@ void Abstract_ThreadClass::onEndLoop()
     gettimeofday(&end_checkpoint, NULL);
 
     lastLoopTime = (end_checkpoint.tv_sec - front_checkpoint.tv_sec) * 1000000L + (end_checkpoint.tv_usec - front_checkpoint.tv_usec);
+    lastLoopTime /= 1000;
     if (lastLoopTime > task_deadline)
     {
         LOG_F(ERROR, "Task deadline exedeed (expected %dms but got %ldms)", task_deadline, lastLoopTime);

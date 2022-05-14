@@ -18,6 +18,7 @@
 #include "application/network/ApplicationMediator.h"
 #include "application/converter/Json_ApplicationMessageConverter.h"
 #include "drone/DroneCommunicator.h"
+#include "mediator/MediatorMainCommunicator.h"
 
 #include "channels/channels.h"
 #include "util/base_64.h"
@@ -43,15 +44,16 @@ int main(int argc, char* argv[])
 
     auto messageConverter = make_unique<Json_ApplicationMessageConverter>();
     auto androidMediator = make_unique<ApplicationMediator>(
-        params.appParams.receivePort, 
-        params.appParams.sendPort,
+        params.app.receivePort, 
+        params.app.sendPort,
         move(messageConverter)
     );
     
-    auto droneCommunicator = make_unique<DroneCommunicator>();
+    auto droneCommunicator = make_shared<DroneCommunicator>();
     GroundStation groundStation(
+        params,
         move(androidMediator),
-        move(droneCommunicator)
+        droneCommunicator
     );
 
     groundStation.run();
