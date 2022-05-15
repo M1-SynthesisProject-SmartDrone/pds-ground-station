@@ -13,7 +13,7 @@ namespace memoryUtils
     template<typename TYPE_TO, typename TYPE_FROM>
     std::unique_ptr<TYPE_TO> static_unique_pointer_cast(std::unique_ptr<TYPE_FROM>&& old)
     {
-        return std::unique_ptr<TYPE_TO>{std::static_cast<TYPE_TO*>(old.release())};
+        return std::unique_ptr<TYPE_TO>{static_cast<TYPE_TO*>(old.release())};
     }
 
 }

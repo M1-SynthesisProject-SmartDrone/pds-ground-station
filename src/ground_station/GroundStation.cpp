@@ -12,11 +12,13 @@ using namespace std;
 GroundStation::GroundStation(
     ConfigParams params,
     std::unique_ptr<ApplicationMediator> applicationMediator,
+    std::shared_ptr<MediatorMainCommunicator> mediatorMainCommunicator,
     std::shared_ptr<DroneCommunicator> droneCommunicator
-): m_params(params)
+) : m_params(params)
 {
     m_applicationMediator = move(applicationMediator);
-    m_droneCommunicator = move(droneCommunicator);
+    m_mediatorMainCommunicator = mediatorMainCommunicator;
+    m_droneCommunicator = droneCommunicator;
 }
 
 GroundStation::~GroundStation()
@@ -36,6 +38,7 @@ void GroundStation::run()
             LOG_F(ERROR, "Error while running ground station : %s", e.what());
         }
     }
+    LOG_F(INFO, "Exiting the server main loop");
 }
 
 void GroundStation::handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMessage> message)
@@ -69,7 +72,6 @@ void GroundStation::handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMe
     default:
         // Unrecognized message
         throw runtime_error("Unrecognized message type : " + to_string(message->messageType));
-        break;
     }
 }
 
@@ -80,12 +82,12 @@ void GroundStation::handleAckMessage()
 
 void GroundStation::handleDroneInfosMessage()
 {
-    m_applicationMediator->sendMessage(m_droneCommunicator->fetchDroneInfos(m_inRecordState));
+    m_applicationMediator->sendMessage(m_droneCommunicator->fetchDroneInfos(isRecording()));
 }
 
 void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 {
-    if (message->record == m_inRecordState)
+    if (message->record == isRecording())
     {
         m_applicationMediator->sendMessage(make_unique<Record_MessageToSend>(false, "Already in wanted record state"));
         return;
@@ -93,16 +95,38 @@ void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 
     if (message->record)
     {
-        // Send the command and start the thread
-        
-        m_inRecordState = true;
+        startRecord();
     }
     else
     {
-
-        m_inRecordState = false;
+        endRecord();
     }
 }
+
+bool GroundStation::isRecording()
+{
+    return m_threadRegister != nullptr;
+}
+
+void GroundStation::startRecord()
+{
+    // Send the message to mediator, then start the famous thread
+    m_mediatorMainCommunicator->startRecord();
+
+    m_threadRegister = make_unique<RegisterPath_ThreadClass>(
+        m_params.pathRegister.saveFrequency,
+        m_params.pathRegister.savesBetweenCheckpoints,
+        m_droneCommunicator,
+        m_mediatorMainCommunicator
+        );
+    m_threadRegister->start();
+}
+
+void GroundStation::endRecord()
+{
+    m_threadRegister->stop();
+    m_mediatorMainCommunicator->endRecord();
+} 
 
 void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)
 {
@@ -145,5 +169,13 @@ void GroundStation::handleManualControlMessage(Manual_MessageReceived* message)
 
 void GroundStation::askStopRunning()
 {
+    LOG_F(INFO, "Ask stop on ground station");
     m_isRunning = false;
+
+    if (m_threadRegister != nullptr)
+    {
+        LOG_F(INFO, "Try to stop register thread");
+        endRecord();
+    }
+
 }

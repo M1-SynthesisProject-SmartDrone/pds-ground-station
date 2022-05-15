@@ -10,7 +10,7 @@
  * 
  * It handles the "register" request that must be made periodically.
  */
-class RegisterPath_ThreadClass : Abstract_ThreadClass
+class RegisterPath_ThreadClass : public Abstract_ThreadClass
 {
 private:
     const int SAVE_FREQ; // Hz

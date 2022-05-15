@@ -27,6 +27,9 @@ using namespace std;
 
 void initSignalHandler();
 void signalHandler(int number);
+void handleExit();
+
+unique_ptr<GroundStation> groundStation = nullptr;
 
 /**
  * THIS APPLICATION MUST BE LAUNCHED AFTER THE DRONE INTERFACE ONE
@@ -44,19 +47,25 @@ int main(int argc, char* argv[])
 
     auto messageConverter = make_unique<Json_ApplicationMessageConverter>();
     auto androidMediator = make_unique<ApplicationMediator>(
-        params.app.receivePort, 
+        params.app.receivePort,
         params.app.sendPort,
         move(messageConverter)
     );
-    
+
+    auto mediatorMainCommunicator = make_shared<MediatorMainCommunicator>(
+        params.mediator.host,
+        params.mediator.mainReceivePort,
+        params.mediator.mainSendPort
+    );
     auto droneCommunicator = make_shared<DroneCommunicator>();
-    GroundStation groundStation(
+    groundStation = make_unique<GroundStation>(
         params,
         move(androidMediator),
+        move(mediatorMainCommunicator),
         droneCommunicator
     );
 
-    groundStation.run();
+    groundStation->run();
 
     // Test for getting and displaying the image in blc_channels
     // auto imgBuffer = pdsChannels::image.uchars;
@@ -72,11 +81,6 @@ int main(int argc, char* argv[])
 
     // cv::imshow("fenetre", img);
     // cv::waitKey(0);
-
-    // auto imageBuffer = pdsChannels::image.uchars;
-    // const uint32_t bufferLength = pdsChannels::imageSize.uints32[0];
-    // string encodedImage = encode_base64(imageBuffer, bufferLength);
-    // cout << encodedImage << endl;
 
     LOG_F(INFO, "End of ground station server");
     return EXIT_SUCCESS;
@@ -98,22 +102,36 @@ void signalHandler(int number)
     {
     case SIGINT:
         LOG_F(WARNING, "SIGINT caught");
+        handleExit();
         exit(0);
         break;
     case SIGQUIT:
         LOG_F(WARNING, "SIGQUIT caught");
+        handleExit();
         exit(0);
         break;
     case SIGTERM:
         LOG_F(WARNING, "SIGTERM caught");
+        handleExit();
         exit(1);
         break;
     case SIGFPE:
         LOG_F(WARNING, "SIGFPE caught");
+        handleExit();
         exit(2);
         break;
     default:
         LOG_F(WARNING, "Unhandled signal caught : %d", number);
         break;
     }
+}
+
+void handleExit()
+{
+    if (groundStation == nullptr)
+    {
+        return;
+    }
+
+    groundStation->askStopRunning();
 }
