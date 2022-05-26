@@ -56,14 +56,21 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertFromMessageType(nlo
 {
     switch (messageType)
     {
-    case RESP_TR_SAVE:
+    case MEDIATOR_MESSAGE_TYPE::RESP_ACK:
+        return convertAck(document);
+        break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE:
         return convertTrSave(document);
         break;
-    case RESP_END_TR_SAVE:
+    case MEDIATOR_MESSAGE_TYPE::RESP_END_TR_SAVE:
         return convertTrEndSave(document);
         break;
     default:
-        throw runtime_error("Cannot find converter for message type " + messageType);
+        {
+            stringstream ss;
+            ss << "Cannot find converter for message type " << (int)messageType;
+            throw runtime_error(ss.str());
+        }
         break;
     }
 }
@@ -76,4 +83,9 @@ TrSave_MediatorResponse* MediatorResponseConverter::convertTrSave(nlohmann::json
 TrEndSave_MediatorResponse* MediatorResponseConverter::convertTrEndSave(nlohmann::json& document)
 {
     return new TrEndSave_MediatorResponse(document["isLaunched"]);
+}
+
+Ack_MediatorResponse* MediatorResponseConverter::convertAck(nlohmann::json& document)
+{
+    return new Ack_MediatorResponse(document["valid"]);
 }

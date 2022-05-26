@@ -24,6 +24,8 @@ public:
     
     std::unique_ptr<TrRegister_MediatorRequest> fetchRegisterData(bool isCheckpoint);
 
+    std::vector<unsigned char> fetchImageData();
+
     // ==== OPERATIONS ON DRONE ====
 
     /**

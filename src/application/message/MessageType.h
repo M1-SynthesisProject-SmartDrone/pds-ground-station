@@ -1,7 +1,8 @@
 #ifndef __MESSAGETYPE_H__
 #define __MESSAGETYPE_H__
 
-typedef enum {
+enum class MESSAGE_TYPE : char
+{
     // RECEIVED MESSAGE TYPES
     REQ_ACK,
     REQ_MANUAL_CONTROL,
@@ -15,5 +16,5 @@ typedef enum {
     RESP_DRONE_INFOS,
     // GLOBAL
     UNKNOWN
-} MESSAGE_TYPE;
+};
 #endif // __MESSAGETYPE_H__

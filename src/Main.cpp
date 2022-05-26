@@ -54,8 +54,7 @@ int main(int argc, char* argv[])
 
     auto mediatorMainCommunicator = make_shared<MediatorMainCommunicator>(
         params.mediator.host,
-        params.mediator.mainReceivePort,
-        params.mediator.mainSendPort
+        params.mediator.mainPort
     );
     auto droneCommunicator = make_shared<DroneCommunicator>();
     groundStation = make_unique<GroundStation>(

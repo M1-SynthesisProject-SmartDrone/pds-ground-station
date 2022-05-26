@@ -20,7 +20,9 @@ struct Abstract_Answer_MessageToSend : Abstract_ApplicationToSendMessage
 
     std::string toString()
     {
-        return "Answer_MessageToSend [type=" + std::to_string(messageType) + " validated = " + std::to_string(validated) + "]";
+        std::stringstream ss;
+        ss << "Answer_MessageToSend [type=" << (int)messageType << " validated = " << validated << "]";
+        return ss.str();
     }
 };
 

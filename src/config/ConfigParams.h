@@ -22,10 +22,8 @@ struct ConfigPathRegister
 struct ConfigMediator
 {
     std::string host;
-    int mainSendPort;
-    int mainReceivePort;
-    int secondarySendPort;
-    int secondaryReceivePort;
+    int mainPort;
+    int secondaryPort;
 };
 
 /**

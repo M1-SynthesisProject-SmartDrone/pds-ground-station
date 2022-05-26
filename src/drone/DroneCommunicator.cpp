@@ -111,18 +111,26 @@ unique_ptr<TrRegister_MediatorRequest> DroneCommunicator::fetchRegisterData(bool
     data->pressure = pdsChannels::highresImu.floats[9];
     data->temperature = pdsChannels::highresImu.floats[12];
 
-    // fetch the image
-    auto imgBuffer = pdsChannels::image.uchars;
-    const auto rows = pdsChannels::imageSize.uints32[0];
-    const auto cols = pdsChannels::imageSize.uints32[1];
-    const auto bufferLength = pdsChannels::imageSize.uints32[2];
+    // // fetch the image
+    // auto imgBuffer = pdsChannels::image.uchars;
+    // const auto rows = pdsChannels::imageSize.uints32[0];
+    // const auto cols = pdsChannels::imageSize.uints32[1];
+    // const auto bufferLength = pdsChannels::imageSize.uints32[2];
 
-    string encodedImage = encode_base64(imgBuffer, bufferLength);
+    // string encodedImage = encode_base64(imgBuffer, bufferLength);
 
-    data->image = encodedImage;
+    // data->image = encodedImage;
 
     auto time = chrono::system_clock::now().time_since_epoch();
     data->time = chrono::duration_cast<chrono::milliseconds>(time).count();
 
     return move(data);
+}
+
+vector<unsigned char> DroneCommunicator::fetchImageData()
+{
+    auto imgBuffer = pdsChannels::image.uchars;
+    const auto bufferLength = pdsChannels::imageSize.uints32[2];
+    vector<unsigned char> v(imgBuffer, imgBuffer + bufferLength);
+    return v;
 }

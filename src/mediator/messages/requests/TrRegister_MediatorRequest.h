@@ -14,7 +14,7 @@ struct TrRegister_MediatorRequest : Abstract_MediatorRequest
     int batteryRemaining;
     bool isCheckpoint;
     std::time_t time;
-    std::string image;
+    ssize_t imageSize;
 
     TrRegister_MediatorRequest()
     {
@@ -38,7 +38,7 @@ struct TrRegister_MediatorRequest : Abstract_MediatorRequest
         document["batteryRemaining"] = batteryRemaining;
         document["isCheckpoint"] = isCheckpoint;
         document["time"] = time;
-        document["image"] = image;
+        document["imageSize"] = imageSize;
         return document.dump();
     }
 };

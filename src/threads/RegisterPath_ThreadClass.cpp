@@ -51,7 +51,9 @@ void RegisterPath_ThreadClass::run()
 
         try
         {
-            m_mediatorCommunicator->registerData(m_droneCommunicator->fetchRegisterData(isCheckpoint));
+            auto request = m_droneCommunicator->fetchRegisterData(isCheckpoint);
+            auto imageData = m_droneCommunicator->fetchImageData();
+            m_mediatorCommunicator->registerData(move(request), imageData);
         }
         catch(const std::exception& e)
         {

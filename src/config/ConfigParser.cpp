@@ -46,10 +46,8 @@ ConfigParams ConfigParser::parse()
     const auto& mediatorSettings = root["mediator"];
     auto mediatorConfig = ConfigMediator{
         mediatorSettings["host"],
-        mediatorSettings["main"]["send_port"],
-        mediatorSettings["main"]["receive_port"],
-        mediatorSettings["secondary"]["send_port"],
-        mediatorSettings["secondary"]["receive_port"]
+        mediatorSettings["main"]["port"],
+        mediatorSettings["secondary"]["port"],
     };
 
     const auto& pathRegisterParams = root["path_register"];

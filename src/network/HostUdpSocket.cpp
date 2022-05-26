@@ -7,6 +7,7 @@ using namespace std;
 HostUdpSocket::HostUdpSocket(std::string host, uint16_t listenPort, uint16_t sendPort): 
     UDPSocket(), m_sendPort(sendPort)
 {
+    inet_pton(AF_INET, host.c_str(), &(m_hostAddr.sin_addr));
     if (m_sendPort == 0)
     {
         m_sendPort = listenPort;

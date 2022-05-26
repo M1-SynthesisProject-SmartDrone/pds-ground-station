@@ -71,7 +71,9 @@ void GroundStation::handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMe
     break;
     default:
         // Unrecognized message
-        throw runtime_error("Unrecognized message type : " + to_string(message->messageType));
+        stringstream ss;
+        ss << "Unrecognized message type : " << (int)message->messageType;
+        throw runtime_error(ss.str());
     }
 }
 

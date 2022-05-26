@@ -8,10 +8,10 @@
 
 using namespace std;
 
-MediatorMainCommunicator::MediatorMainCommunicator(std::string host, uint16_t listenPort, uint16_t sendPort):
-    m_channel(host, listenPort, sendPort)
+MediatorMainCommunicator::MediatorMainCommunicator(std::string host, uint16_t port):
+    m_channel(host, port)
 {
-
+    
 }
 
 MediatorMainCommunicator::~MediatorMainCommunicator()
@@ -37,10 +37,12 @@ unique_ptr<TrSave_MediatorResponse> MediatorMainCommunicator::startRecord()
     return memoryUtils::static_unique_pointer_cast<TrSave_MediatorResponse>(move(response));
 }
 
-void MediatorMainCommunicator::registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest)
+void MediatorMainCommunicator::registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest, std::vector<unsigned char>& imageData)
 {
-    // No response to wait for
     m_channel.sendRequest(move(registerRequest));
+    m_channel.tryReceiveValidAck();
+    m_channel.sendData(imageData);
+    // No response on this last (big) message
 }
 
 unique_ptr<TrEndSave_MediatorResponse> MediatorMainCommunicator::endRecord()
