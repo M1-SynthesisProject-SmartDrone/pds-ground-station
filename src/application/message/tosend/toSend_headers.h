@@ -7,5 +7,8 @@
 #include "DroneInfos_MessageToSend.h"
 #include "Record_MessageToSend.h"
 #include "StartDrone_MessageToSend.h"
+#include "PathLaunch_MessageToSend.h"
+#include "PathOne_MessageToSend.h"
+#include "PathList_MessageToSend.h"
 
 #endif // __TOSEND_HEADERS_H__

@@ -7,5 +7,8 @@
 #include "Manual_MessageReceived.h"
 #include "Record_MessageReceived.h"
 #include "Start_MessageReceived.h"
+#include "PathList_MessageReceived.h"
+#include "PathOne_MessageReceived.h"
+#include "PathLaunch_MessageReceived.h"
 
 #endif // __RECEVIED_HEADERS_H__

@@ -56,11 +56,11 @@ Record_MessageReceived* Json_ReceivedMessagesConverter::parseRecordRequest(nlohm
     };
 }
 
-
 DroneInfos_MessageReceived* Json_ReceivedMessagesConverter::parseDroneInfosRequest(nlohmann::json& obj)
 {
     return new DroneInfos_MessageReceived();
 }
+
 
 Manual_MessageReceived* Json_ReceivedMessagesConverter::parseManualRequest(nlohmann::json& obj)
 {
@@ -74,6 +74,23 @@ Manual_MessageReceived* Json_ReceivedMessagesConverter::parseManualRequest(nlohm
         forwardMove,
         motorPower
     };
+}
+
+PathList_MessageReceived* Json_ReceivedMessagesConverter::parsePathListRequest(nlohmann::json& obj)
+{
+    return new PathList_MessageReceived();
+}
+
+PathOne_MessageReceived* Json_ReceivedMessagesConverter::parsePathOneRequest(nlohmann::json& obj)
+{
+    long pathId = obj["pathId"];
+    return new PathOne_MessageReceived(pathId);
+}
+
+PathLaunch_MessageReceived* Json_ReceivedMessagesConverter::parsePathLaunchRequest(nlohmann::json& obj)
+{
+    long pathId = obj["pathId"];
+    return new PathLaunch_MessageReceived(pathId);
 }
 
 std::function<Abstract_ApplicationReceivedMessage* (nlohmann::json&)>

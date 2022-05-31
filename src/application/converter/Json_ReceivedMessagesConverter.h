@@ -7,12 +7,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "application/message/received/Abstract_ApplicationReceivedMessage.h"
-#include "application/message/received/Ack_MessageReceived.h"
-#include "application/message/received/Start_MessageReceived.h"
-#include "application/message/received/Record_MessageReceived.h"
-#include "application/message/received/Manual_MessageReceived.h"
-#include "application/message/received/DroneInfos_MessageReceived.h"
+#include "application/message/received/recevied_headers.h"
 
 class Json_ReceivedMessagesConverter
 {
@@ -22,6 +17,9 @@ private:
     Record_MessageReceived* parseRecordRequest(nlohmann::json& obj);
     Manual_MessageReceived* parseManualRequest(nlohmann::json& obj);
     DroneInfos_MessageReceived* parseDroneInfosRequest(nlohmann::json& obj);
+    PathList_MessageReceived* parsePathListRequest(nlohmann::json& obj);
+    PathOne_MessageReceived* parsePathOneRequest(nlohmann::json& obj);
+    PathLaunch_MessageReceived* parsePathLaunchRequest(nlohmann::json& obj);
 
     std::function<Abstract_ApplicationReceivedMessage*(nlohmann::json&)> 
         findMessageConverterFunc(nlohmann::json& document);
@@ -40,7 +38,10 @@ private:
         {"START_DRONE", [this](auto content) {return parseStartRequest(content);}},
         {"MANUAL_CONTROL", [this](auto content) {return parseManualRequest(content);}},
         {"RECORD", [this](auto content) {return parseRecordRequest(content);}},
-        {"DRONE_INFOS", [this](auto content) {return parseDroneInfosRequest(content);}}
+        {"DRONE_INFOS", [this](auto content) {return parseDroneInfosRequest(content);}},
+        {"PATH_LIST", [this](auto content) {return parsePathListRequest(content);}},
+        {"PATH_ONE", [this](auto content) {return parsePathOneRequest(content);}},
+        {"PATH_LAUNCH", [this](auto content) {return parsePathLaunchRequest(content);}},
     };
 public:
     Json_ReceivedMessagesConverter();

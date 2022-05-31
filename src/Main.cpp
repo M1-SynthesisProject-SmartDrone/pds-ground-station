@@ -21,7 +21,6 @@
 #include "mediator/MediatorMainCommunicator.h"
 
 #include "channels/channels.h"
-#include "util/base_64.h"
 
 using namespace std;
 
@@ -56,6 +55,7 @@ int main(int argc, char* argv[])
         params.mediator.host,
         params.mediator.mainPort
     );
+    // TODO create the second communicator here
     auto droneCommunicator = make_shared<DroneCommunicator>();
     groundStation = make_unique<GroundStation>(
         params,

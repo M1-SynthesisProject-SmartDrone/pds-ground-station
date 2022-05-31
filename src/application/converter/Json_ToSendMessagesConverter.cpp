@@ -97,3 +97,45 @@ nlohmann::json Json_ToSendMessagesConverter::convertDroneInfos(DroneInfos_Messag
 
     return document;
 }
+
+nlohmann::json Json_ToSendMessagesConverter::convertPathList(PathList_MessageToSend* pathListMessage)
+{
+    nlohmann::json document = createBaseDocument("RESP_PATH_GET");
+
+    // Fill the array from the structure
+    auto jsonPaths = nlohmann::json::array();
+    for (const auto& path : pathListMessage->paths)
+    {
+        nlohmann::json jsonObj = {
+            {"name", path.name},
+            {"id", path.id},
+            {"date", path.date}
+        };
+        jsonPaths.push_back(jsonObj);
+    }
+    document["content"]["paths"] = jsonPaths;
+    return document;
+}
+
+nlohmann::json Json_ToSendMessagesConverter::convertPathOne(PathOne_MessageToSend* pathOneMessage)
+{
+    nlohmann::json document = createBaseDocument("RESP_PATH_ONE");
+
+    document["content"] = {
+        {"id", pathOneMessage->id},
+        {"name", pathOneMessage->name},
+        {"date", pathOneMessage->date},
+        {"nbPoints", pathOneMessage->nbPoints},
+        {"nbCheckpoints", pathOneMessage->nbCheckpoints},
+        {"departure", {
+            {"lat", pathOneMessage->departureLat},
+            {"lon", pathOneMessage->departureLon},
+            {"alt", pathOneMessage->departureAlt},
+        }}
+    };
+}
+
+nlohmann::json Json_ToSendMessagesConverter::convertPathLaunch(PathLaunch_MessageToSend* pathLaunchMessage)
+{
+    return convertAnswerMessage("RESP_PATH_LAUNCH", pathLaunchMessage);
+}

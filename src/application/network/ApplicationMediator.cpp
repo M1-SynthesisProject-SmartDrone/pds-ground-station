@@ -2,6 +2,8 @@
 
 #include "application/converter/Json_ApplicationMessageConverter.h"
 
+// #define APPLICATION_MEDIATOR_DEBUG
+
 using namespace std;
 
 ApplicationMediator::ApplicationMediator(
@@ -32,7 +34,9 @@ std::unique_ptr<Abstract_ApplicationReceivedMessage> ApplicationMediator::receiv
         LOG_F(ERROR, "Received bigger message than buffer could handle, message truncated");
     }
 
-    cout << bytesRead << ":" << string(buffer, bytesRead) << endl;
+#ifdef APPLICATION_MEDIATOR_DEBUG
+    cout << bytesRead << ":" << string(buffer, bytesRead) << "\n";
+#endif
 
     auto convertedMessage = m_converter->convertMessageReceived(string(buffer, bytesRead));
     return unique_ptr<Abstract_ApplicationReceivedMessage>(convertedMessage);

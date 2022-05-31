@@ -89,19 +89,34 @@ void GroundStation::handleDroneInfosMessage()
 
 void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 {
+    if (!m_droneCommunicator->isArmed())
+    {
+        m_applicationMediator->sendMessage(make_unique<Record_MessageToSend>(false, "Drone is not armed"));
+        return;
+    }
+
     if (message->record == isRecording())
     {
         m_applicationMediator->sendMessage(make_unique<Record_MessageToSend>(false, "Already in wanted record state"));
         return;
     }
 
-    if (message->record)
+    try
     {
-        startRecord();
+        if (message->record)
+        {
+            startRecord();
+        }
+        else
+        {
+            endRecord();
+        }
     }
-    else
+    catch (const std::exception& e)
     {
-        endRecord();
+        stringstream ss;
+        ss << "Error while handling record message : " << e.what();
+        m_applicationMediator->sendMessage(make_unique<Record_MessageToSend>(false, ss.str()));
     }
 }
 
@@ -128,10 +143,16 @@ void GroundStation::endRecord()
 {
     m_threadRegister->stop();
     m_mediatorMainCommunicator->endRecord();
-} 
+}
 
 void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)
 {
+    if (m_droneCommunicator->isArmed() == message->startDrone)
+    {
+        m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(false, "Drone is already in wanted state"));
+        return;
+    }
+
     try
     {
         if (message->startDrone)
