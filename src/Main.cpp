@@ -19,6 +19,7 @@
 #include "application/converter/Json_ApplicationMessageConverter.h"
 #include "drone/DroneCommunicator.h"
 #include "mediator/MediatorMainCommunicator.h"
+#include "mediator/MediatorSecondaryCommunicator.h"
 
 #include "channels/channels.h"
 
@@ -54,6 +55,10 @@ int main(int argc, char* argv[])
     auto mediatorMainCommunicator = make_shared<MediatorMainCommunicator>(
         params.mediator.host,
         params.mediator.mainPort
+    );
+    auto mediatorSecondaryCommunicator = make_shared<MediatorMainCommunicator>(
+        params.mediator.host,
+        params.mediator.secondaryPort
     );
     // TODO create the second communicator here
     auto droneCommunicator = make_shared<DroneCommunicator>();
