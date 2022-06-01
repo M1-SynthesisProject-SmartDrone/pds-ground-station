@@ -1,4 +1,4 @@
-#include "MediatorMainCommunicator.h"
+#include "MediatorSecondaryCommunicator.h"
 
 #include "util/memory_utils.hpp"
 
@@ -8,11 +8,11 @@
 
 using namespace std;
 
-MediatorMainCommunicator::MediatorMainCommunicator(std::string host, uint16_t port):
+MediatorSecondaryCommunicator::MediatorSecondaryCommunicator(std::string host, uint16_t port):
     m_channel(host, port)
 {
     
 }
 
-MediatorMainCommunicator::~MediatorMainCommunicator()
+MediatorSecondaryCommunicator::~MediatorSecondaryCommunicator()
 {}

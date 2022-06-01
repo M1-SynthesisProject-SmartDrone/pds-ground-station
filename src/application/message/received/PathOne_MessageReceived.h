@@ -18,7 +18,7 @@ struct PathOne_MessageReceived : Abstract_ApplicationReceivedMessage
 
     std::string toString()
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << "PathOne_MessageReceived [pathId=" << this->pathId << "]";
         return ss.str();
     }

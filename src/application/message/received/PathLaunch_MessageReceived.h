@@ -18,7 +18,7 @@ struct PathLaunch_MessageReceived : Abstract_ApplicationReceivedMessage
 
     std::string toString()
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << "PathLaunch_MessageReceived [pathId=" << this->pathId << "]";
         return ss.str();
     }
