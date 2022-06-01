@@ -5,17 +5,17 @@
 
 struct TrLaunch_MediatorResponse : Abstract_MediatorResponse
 {
-    long id;
+    long isDone;
 
-    TrLaunch_MediatorResponse(long id)
+    TrLaunch_MediatorResponse(bool isDone)
     {
         this->messageType = MEDIATOR_MESSAGE_TYPE::RESP_TR_LAUNCH;
-        this->id = id;
+        this->isDone = isDone;
     }
 
     std::string toString()
     {
-        return "TrLaunch_MediatorResponse [id: " + std::to_string(id) + "]";
+        return "TrLaunch_MediatorResponse";
     }
 };
 

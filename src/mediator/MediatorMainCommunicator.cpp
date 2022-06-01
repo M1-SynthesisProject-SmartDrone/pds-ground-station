@@ -8,10 +8,10 @@
 
 using namespace std;
 
-MediatorMainCommunicator::MediatorMainCommunicator(std::string host, uint16_t port):
+MediatorMainCommunicator::MediatorMainCommunicator(std::string host, uint16_t port) :
     m_channel(host, port)
 {
-    
+
 }
 
 MediatorMainCommunicator::~MediatorMainCommunicator()
@@ -39,10 +39,17 @@ unique_ptr<TrSave_MediatorResponse> MediatorMainCommunicator::startRecord()
 
 void MediatorMainCommunicator::registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest, std::vector<unsigned char>& imageData)
 {
-    m_channel.sendRequest(move(registerRequest));
-    m_channel.tryReceiveValidAck();
-    m_channel.sendData(imageData);
-    // No response on this last (big) message
+    auto response = m_channel.sendAndReceive(move(registerRequest), MEDIATOR_MESSAGE_TYPE::RESP_TR_REGISTER);
+    auto resp = static_cast<TrRegister_MediatorResponse*>(response.get());
+    if (resp->isDone)
+    {
+        m_channel.sendData(imageData);
+        // No response on this last (big) message
+    }
+    else
+    {
+        throw runtime_error("Resp register failed : assure that the mediator is in a valid state");
+    }
 }
 
 unique_ptr<TrEndSave_MediatorResponse> MediatorMainCommunicator::endRecord()
@@ -50,4 +57,26 @@ unique_ptr<TrEndSave_MediatorResponse> MediatorMainCommunicator::endRecord()
     auto responseType = MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE;
     auto response = m_channel.sendAndReceive(make_unique<TrEndSave_MediatorRequest>(m_currentTripName), responseType);
     return memoryUtils::static_unique_pointer_cast<TrEndSave_MediatorResponse>(move(response));
+}
+
+unique_ptr<PathList_MediatorResponse> MediatorMainCommunicator::fetchPathList()
+{
+    auto response = m_channel.sendAndReceive(make_unique<PathList_MediatorRequest>(), MEDIATOR_MESSAGE_TYPE::RESP_PATH_LIST);
+    return memoryUtils::static_unique_pointer_cast<PathList_MediatorResponse>(move(response));
+}
+
+unique_ptr<PathOne_MediatorResponse> MediatorMainCommunicator::fetchOnePath(long pathId)
+{
+    auto response = m_channel.sendAndReceive(make_unique<PathOne_MediatorRequest>(pathId), MEDIATOR_MESSAGE_TYPE::RESP_PATH_ONE);
+    return memoryUtils::static_unique_pointer_cast<PathOne_MediatorResponse>(move(response));
+}
+
+void MediatorMainCommunicator::launchPath(long pathId)
+{
+    auto response = m_channel.sendAndReceive(make_unique<TrLaunch_MediatorRequest>(pathId), MEDIATOR_MESSAGE_TYPE::RESP_TR_LAUNCH);
+    auto resp = static_cast<TrLaunch_MediatorResponse*>(response.get());
+    if (!resp->isDone)
+    {
+        throw runtime_error("Launch path failed : assure that the mediator is in a valid state or that given id is right");
+    }
 }

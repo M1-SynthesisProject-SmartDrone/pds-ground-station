@@ -6,6 +6,7 @@
 #include "TrEndSave_MediatorResponse.h"
 #include "Ack_MediatorResponse.h"
 #include "TrLaunch_MediatorResponse.h"
+#include "TrRegister_MediatorResponse.h"
 #include "PathList_MediatorResponse.h"
 #include "PathOne_MediatorResponse.h"
 
