@@ -210,19 +210,45 @@ void GroundStation::handleManualControlMessage(Manual_MessageReceived* message)
 
 void GroundStation::handlePathListMessage(PathList_MessageReceived* message)
 {
-    
+    auto pathListResp = m_mediatorMainCommunicator->fetchPathList();
+    auto mobileResp = new PathList_MessageToSend();
+    for (const auto& mediatorItem : pathListResp->paths)
+    {
+        char buffer[16] = { 0 };
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&mediatorItem.timestamp));
+        PathList_Path pathItem{
+            mediatorItem.name,
+            mediatorItem.id,
+            string(buffer)
+        };
+        mobileResp->paths.push_back(pathItem);
+    }
+    m_applicationMediator->sendMessage(unique_ptr<PathList_MessageToSend>(mobileResp));
 }
 
 void GroundStation::handlePathOneMessage(PathOne_MessageReceived* message)
 {
+    auto pathOneResp = m_mediatorMainCommunicator->fetchOnePath(message->pathId);
+    
+    auto mobileResp = new PathOne_MessageToSend();
+    char buffer[16] = { 0 };
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&(pathOneResp->date)));
+    mobileResp->date = string(buffer);
+    mobileResp->id = pathOneResp->id;
+    mobileResp->name = pathOneResp->name;
+    mobileResp->nbCheckpoints = pathOneResp->nbCheckpoints;
+    mobileResp->nbPoints = pathOneResp->nbPoints;
+    mobileResp->departureAlt = pathOneResp->depAltitude;
+    mobileResp->departureLon = pathOneResp->depLongitude;
+    mobileResp->departureLat = pathOneResp->depLatitude;
 
+    m_applicationMediator->sendMessage(unique_ptr<PathOne_MessageToSend>(mobileResp));
 }
 
 void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
 {
-    
+    m_mediatorMainCommunicator->launchPath(message->pathId);
 }
-
 
 void GroundStation::askStopRunning()
 {
@@ -234,5 +260,4 @@ void GroundStation::askStopRunning()
         LOG_F(INFO, "Try to stop register thread");
         endRecord();
     }
-
 }

@@ -21,13 +21,16 @@ public:
     MediatorMainCommunicator(std::string host, uint16_t port);
     ~MediatorMainCommunicator();
 
+    // ==== RECORD ====
     std::unique_ptr<TrSave_MediatorResponse> startRecord();
-    
     void registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest, std::vector<unsigned char>& imageData);
-
     std::unique_ptr<TrEndSave_MediatorResponse> endRecord();
 
-    
+    // ==== PATH ====
+    std::unique_ptr<PathList_MediatorResponse> fetchPathList();
+    std::unique_ptr<PathOne_MediatorResponse> fetchOnePath(long pathId);
+
+    void launchPath(long pathId);
 };
 
 #endif // __MEDIATORMAINCOMMUNICATOR_H__

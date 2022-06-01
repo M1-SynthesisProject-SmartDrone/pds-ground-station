@@ -5,5 +5,8 @@
 #include "TrEndSave_MediatorRequest.h"
 #include "TrSave_MediatorRequest.h"
 #include "TrRegister_MediatorRequest.h"
+#include "TrLaunch_MediatorRequest.h"
+#include "PathList_MediatorRequest.h"
+#include "PathOne_MediatorRequest.h"
 
 #endif // __MEDIATOR_REQUEST_HEADERS_H__
