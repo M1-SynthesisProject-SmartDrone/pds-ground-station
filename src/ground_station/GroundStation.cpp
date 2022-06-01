@@ -6,6 +6,7 @@
 
 #include "application/message/received/recevied_headers.h"
 #include "application/message/tosend/toSend_headers.h"
+#include "util/numconvert_utils.hpp"
 
 using namespace std;
 
@@ -129,6 +130,7 @@ void GroundStation::handleRecordMessage(Record_MessageReceived* message)
         {
             endRecord();
         }
+        m_applicationMediator->sendMessage(make_unique<Record_MessageToSend>(true));
     }
     catch (const std::exception& e)
     {
@@ -238,16 +240,24 @@ void GroundStation::handlePathOneMessage(PathOne_MessageReceived* message)
     mobileResp->name = pathOneResp->name;
     mobileResp->nbCheckpoints = pathOneResp->nbCheckpoints;
     mobileResp->nbPoints = pathOneResp->nbPoints;
-    mobileResp->departureAlt = pathOneResp->depAltitude;
-    mobileResp->departureLon = pathOneResp->depLongitude;
-    mobileResp->departureLat = pathOneResp->depLatitude;
+    mobileResp->departureAlt = to_string(pathOneResp->depAltitude);
+    mobileResp->departureLon = numConvertUtils::coordIntToString(pathOneResp->depLongitude);
+    mobileResp->departureLat = numConvertUtils::coordIntToString(pathOneResp->depLatitude);
 
     m_applicationMediator->sendMessage(unique_ptr<PathOne_MessageToSend>(mobileResp));
 }
 
 void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
 {
-    m_mediatorMainCommunicator->launchPath(message->pathId);
+    try
+    {
+        m_mediatorMainCommunicator->launchPath(message->pathId);
+    }
+    catch(const std::exception& e)
+    {
+        LOG_F(ERROR, "%s", e.what());
+        m_applicationMediator->sendMessage(make_unique<PathLaunch_MessageToSend>(false, e.what()));
+    }
 }
 
 void GroundStation::askStopRunning()
