@@ -89,3 +89,38 @@ Ack_MediatorResponse* MediatorResponseConverter::convertAck(nlohmann::json& docu
 {
     return new Ack_MediatorResponse(document["valid"]);
 }
+
+TrLaunch_MediatorResponse* MediatorResponseConverter::convertTrLaunch(nlohmann::json& document)
+{
+    return new TrLaunch_MediatorResponse(document["isDone"]);
+}
+
+PathList_MediatorResponse* MediatorResponseConverter::convertPathList(nlohmann::json& document)
+{
+    auto resp = new PathList_MediatorResponse();
+    auto content = document["content"];
+    for (const auto& elt : content)
+    {
+        RespPathList_Item item{
+            elt["name"],
+            elt["id"],
+            elt["date"]
+        };
+        resp->paths.push_back(item);
+    }
+    return resp;
+}
+
+PathOne_MediatorResponse* MediatorResponseConverter::convertPathOne(nlohmann::json& document)
+{
+    auto resp = new PathOne_MediatorResponse();
+    resp->name = document["name"];   
+    resp->id = document["id"];
+    resp->nbCheckpoints = document["nbCheckpoints"];
+    resp->nbPoints = document["nbPoints"];
+    resp->date = document["date"];
+    resp->depLatitude = document["latitude"];
+    resp->depLongitude = document["longitude"];
+    resp->depAltitude = document["altitude"];
+    return resp;
+}
