@@ -23,6 +23,28 @@ struct PathList_MessageToSend : Abstract_ApplicationToSendMessage
     {
         this->messageType = MESSAGE_TYPE::RESP_PATH_LIST;
     }
+
+    std::string getMessageType()
+    {
+        return "RESP_PATH_GET";
+    }
+
+    nlohmann::json createContent()
+    {
+        nlohmann::json content;
+        auto jsonPaths = nlohmann::json::array();
+        for (const auto& path : this->paths)
+        {
+            nlohmann::json jsonObj = {
+                {"name", path.name},
+                {"id", path.id},
+                {"date", path.date}
+            };
+            jsonPaths.push_back(jsonObj);
+        }
+        content["paths"] = jsonPaths;
+        return content;
+    }
 };
 
 #endif // __PATHLIST_MESSAGETOSEND_H__

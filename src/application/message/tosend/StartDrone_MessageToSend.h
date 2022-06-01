@@ -8,6 +8,11 @@ struct StartDrone_MessageToSend : Abstract_Answer_MessageToSend
     StartDrone_MessageToSend(bool validated, std::string message = "")
     : Abstract_Answer_MessageToSend(MESSAGE_TYPE::RESP_START_DRONE, validated, message)
     {}
+
+    std::string getMessageType()
+    {
+        return "RESP_START_DRONE";
+    }
 };
 
 #endif // __STARTDRONE_MESSAGETOSEND_H__

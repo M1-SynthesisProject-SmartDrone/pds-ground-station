@@ -52,6 +52,28 @@ struct DroneInfos_MessageToSend : Abstract_ApplicationToSendMessage
     {
         this->messageType = MESSAGE_TYPE::RESP_DRONE_INFOS;
     }
+
+    std::string getMessageType()
+    {
+        return "RESP_DRONE_INFOS";
+    }
+
+    nlohmann::json createContent()
+    {
+        return {
+            {"armed", this->isArmed},
+            {"recording", this->isRecording},
+            {"batteryRemaining", this->batteryRemaining},
+            {"lat", this->lat},
+            {"lon", this->lon},
+            {"alt", this->alt},
+            {"relativeAlt", this->relativeAlt},
+            {"vx", this->vx},
+            {"vy", this->vy},
+            {"vz", this->vz},
+            {"yawRotation", this->yawRotation}
+        };
+    }
 };
 
 #endif // __DRONE_MESSAGETOSEND_H__

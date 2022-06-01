@@ -8,6 +8,11 @@ struct Record_MessageToSend : Abstract_Answer_MessageToSend
     Record_MessageToSend(bool validated, std::string message = "")
     : Abstract_Answer_MessageToSend(MESSAGE_TYPE::RESP_RECORD, validated, message)
     {}
+
+    std::string getMessageType()
+    {
+        return "RESP_RECORD";
+    }
 };
 
 #endif // __RECORD_MESSAGETOSEND_H__

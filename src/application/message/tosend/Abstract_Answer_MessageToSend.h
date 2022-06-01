@@ -24,6 +24,16 @@ struct Abstract_Answer_MessageToSend : Abstract_ApplicationToSendMessage
         ss << "Answer_MessageToSend [type=" << (int)messageType << " validated = " << validated << "]";
         return ss.str();
     }
+    
+    virtual std::string getMessageType() = 0;
+
+    nlohmann::json createContent() 
+    {
+        return {
+            {"validated", this->validated},
+            {"message", this->message},
+        };
+    }
 };
 
 

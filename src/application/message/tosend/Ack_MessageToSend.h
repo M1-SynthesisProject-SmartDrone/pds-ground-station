@@ -9,6 +9,10 @@ struct Ack_MessageToSend : Abstract_Answer_MessageToSend
     : Abstract_Answer_MessageToSend(MESSAGE_TYPE::RESP_ACK, validated, message)
     {}
 
+    std::string getMessageType()
+    {
+        return "ACK";
+    }
 };
 
 #endif // __ACK_MESSAGETOSEND_H__
