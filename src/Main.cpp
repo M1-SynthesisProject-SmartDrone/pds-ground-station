@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         move(mediatorMainCommunicator),
         droneCommunicator
     );
-
+    
     groundStation->run();
 
     // Test for getting and displaying the image in blc_channels

@@ -69,6 +69,24 @@ void GroundStation::handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMe
         handleStartDroneMessage(startMessage);
     }
     break;
+    case MESSAGE_TYPE::REQ_PATH_LIST:
+    {
+        auto pathListMessage = static_cast<PathList_MessageReceived*>(message.get());
+        handlePathListMessage(pathListMessage);
+    }
+    break;
+    case MESSAGE_TYPE::REQ_PATH_ONE:
+    {
+        auto pathOneMessage = static_cast<PathOne_MessageReceived*>(message.get());
+        handlePathOneMessage(pathOneMessage);
+    }
+    break;
+    case MESSAGE_TYPE::REQ_PATH_LAUNCH:
+    {
+        auto pathLaunchMessage = static_cast<PathLaunch_MessageReceived*>(message.get());
+        handlePathLaunchMessage(pathLaunchMessage);
+    }
+    break;
     default:
         // Unrecognized message
         stringstream ss;
@@ -189,6 +207,22 @@ void GroundStation::handleManualControlMessage(Manual_MessageReceived* message)
         LOG_F(ERROR, "Error while handling manual control command : %s", e.what());
     }
 }
+
+void GroundStation::handlePathListMessage(PathList_MessageReceived* message)
+{
+    
+}
+
+void GroundStation::handlePathOneMessage(PathOne_MessageReceived* message)
+{
+
+}
+
+void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
+{
+    
+}
+
 
 void GroundStation::askStopRunning()
 {

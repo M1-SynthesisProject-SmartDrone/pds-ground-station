@@ -40,6 +40,10 @@ private:
 
     void handleStartDroneMessage(Start_MessageReceived* message);
     void handleManualControlMessage(Manual_MessageReceived* message);
+
+    void handlePathListMessage(PathList_MessageReceived* message);
+    void handlePathOneMessage(PathOne_MessageReceived* message);
+    void handlePathLaunchMessage(PathLaunch_MessageReceived* message);
 public:
     GroundStation(
         ConfigParams params,

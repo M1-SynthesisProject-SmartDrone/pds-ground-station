@@ -26,6 +26,8 @@ public:
     void registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest, std::vector<unsigned char>& imageData);
 
     std::unique_ptr<TrEndSave_MediatorResponse> endRecord();
+
+    
 };
 
 #endif // __MEDIATORMAINCOMMUNICATOR_H__
