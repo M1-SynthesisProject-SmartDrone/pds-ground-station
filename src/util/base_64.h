@@ -3,8 +3,10 @@
 
 #include <string>
 
-std::string encode_base64(unsigned char* buffer, uint32_t bufferLength);
-
-std::string decode_base64(std::string str);
+namespace base64
+{
+    std::string encode(unsigned char* buffer, uint32_t bufferLength);
+    std::string decode(std::string str);
+}
 
 #endif // __BASE_64_H__

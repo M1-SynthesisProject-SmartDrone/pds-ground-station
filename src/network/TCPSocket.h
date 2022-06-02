@@ -104,7 +104,7 @@ public:
     struct sockaddr_in getServerAddr();
 };
 
-// As we use a template, we must define it in the header for for mermitting discovery on compilation
+// As we use a template, we must define it in the header for for permitting discovery on compilation
 template<typename T>
 std::vector<T> TCPSocket::receiveBigMessage(ssize_t nbBytesWanted, int timeoutMs, int flags)
 {

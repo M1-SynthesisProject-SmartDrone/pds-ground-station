@@ -11,6 +11,7 @@
 #include "threads/RegisterPath_ThreadClass.h"
 #include "config/ConfigParams.h"
 #include "mediator/MediatorMainCommunicator.h"
+#include "mediator/MediatorSecondaryCommunicator.h"
 
 /**
  * The main class that will handle everything in the server
@@ -22,8 +23,9 @@ private:
 
     ConfigParams m_params;
 
-    std::unique_ptr<ApplicationMediator> m_applicationMediator;
+    std::shared_ptr<ApplicationMediator> m_applicationMediator;
     std::shared_ptr<MediatorMainCommunicator> m_mediatorMainCommunicator;
+    std::shared_ptr<MediatorSecondaryCommunicator> m_mediatorSecondaryCommunicator;
     std::shared_ptr<DroneCommunicator> m_droneCommunicator;
 
     std::unique_ptr<RegisterPath_ThreadClass> m_threadRegister = nullptr;
@@ -47,8 +49,9 @@ private:
 public:
     GroundStation(
         ConfigParams params,
-        std::unique_ptr<ApplicationMediator> applicationMediator,
+        std::shared_ptr<ApplicationMediator> applicationMediator,
         std::shared_ptr<MediatorMainCommunicator> mediatorMainCommunicator,
+        std::shared_ptr<MediatorSecondaryCommunicator> mediatorSecondaryCommunicator,
         std::shared_ptr<DroneCommunicator> droneCommunicator
     );
     ~GroundStation();

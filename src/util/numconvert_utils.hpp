@@ -22,23 +22,23 @@ namespace numConvertUtils
     }
 
     /**
-     * Converts a coordinate from the integer representation to a double 
+     * Converts a coordinate from the integer representation to a float
      * following the deg7 format.
      * This will results in numbers approching strings created by 
      * "convertIntToString" function (not as precise as we lose precision with floating numbers).
      */
-    double coordIntToDouble(int coordinate)
+    float coordIntToFloat(int coordinate)
     {
-        return (double) coordinate / 10000000.0;
+        return (float) coordinate / 10000000.0f;
     }
 
     /**
      * Converts an angle represented in a number between 0 and 36499 to 
      * a number bewteen 0.0 and 364.99
      */
-    double angleIntToDouble(int angle)
+    float angleIntToFloat(int angle)
     {
-        return (double) angle / 100.0;
+        return (float) angle / 100.0f;
     }
 }
 

@@ -1,0 +1,22 @@
+==== Autopilot ====
+
+Le user ne peut pas controller tant que le thread est actif ?
+    Pas seulement :
+        - Si en cours de pilotage auto, oui
+        - Si en mode "erreur" et que le monsieur vaut faire qqch, il faut pouvoir piloter
+    ==> Donc, il nous faut un booléen qui puisse être lu par GroundStation
+
+Donc autopilot :
+    - Récupérer tous les checpoints (sans image)
+    - On récupère l'image du premier cp
+    - Lancer arkins : le drone va vers le cp
+    - Dès que le drone est au point :
+        - On récupère l'image de la caméra
+        - On envoie les 2 images au traitement d'image
+        - En attendant le traitement, on envoie l'image récup au mediateur
+    - Si anomalie détectée :
+        - On envoie la commande pour arrêter le drone (direct control avec full 0s)
+        - On met le booléen "erreur" à true
+        
+    
+Donc si anomalie : on locke le thread autopilot et c'est re a ground station de s'occupé 

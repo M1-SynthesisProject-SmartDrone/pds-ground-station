@@ -45,11 +45,10 @@ int main(int argc, char* argv[])
     ConfigParser configParser(argc, argv);
     ConfigParams params = configParser.parse();
 
-    auto messageConverter = make_unique<Json_ApplicationMessageConverter>();
-    auto androidMediator = make_unique<ApplicationMediator>(
+    auto androidMediator = make_shared<ApplicationMediator>(
         params.app.receivePort,
         params.app.sendPort,
-        move(messageConverter)
+        make_unique<Json_ApplicationMessageConverter>()
     );
 
     auto mediatorMainCommunicator = make_shared<MediatorMainCommunicator>(
@@ -60,7 +59,6 @@ int main(int argc, char* argv[])
         params.mediator.host,
         params.mediator.secondaryPort
     );
-    // TODO create the second communicator here
     auto droneCommunicator = make_shared<DroneCommunicator>();
     groundStation = make_unique<GroundStation>(
         params,
@@ -71,7 +69,7 @@ int main(int argc, char* argv[])
     
     groundStation->run();
 
-    // Test for getting and displaying the image in blc_channels
+    // ==== Test for getting and displaying the image in blc_channels ====
     // auto imgBuffer = pdsChannels::image.uchars;
     // auto rows = pdsChannels::imageSize.uints32[0];
     // auto cols = pdsChannels::imageSize.uints32[1];
@@ -132,10 +130,10 @@ void signalHandler(int number)
 
 void handleExit()
 {
-    if (groundStation == nullptr)
-    {
-        return;
-    }
+    // Close opened channels here
 
-    groundStation->askStopRunning();
+    if (groundStation)
+    {
+        groundStation->askStopRunning();
+    }
 }

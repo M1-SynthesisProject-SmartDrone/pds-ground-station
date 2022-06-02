@@ -14,7 +14,7 @@ bool isBase64(unsigned char c)
 // Implementation from https://stackoverflow.com/a/180949 (with a bit of modifications)
 // See also http://www.adp-gmbh.ch/cpp/common/base64.html
 
-string encode_base64(unsigned char* buffer, uint32_t bufferLength)
+string base64::encode(unsigned char* buffer, uint32_t bufferLength)
 {
     stringstream ss;
 
@@ -60,7 +60,7 @@ string encode_base64(unsigned char* buffer, uint32_t bufferLength)
     return ss.str();
 }
 
-string decode_base64(std::string str)
+string base64::decode(std::string str)
 {
     stringstream ss;
     int len = str.size();

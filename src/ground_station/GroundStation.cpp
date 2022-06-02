@@ -12,14 +12,16 @@ using namespace std;
 
 GroundStation::GroundStation(
     ConfigParams params,
-    std::unique_ptr<ApplicationMediator> applicationMediator,
+    std::shared_ptr<ApplicationMediator> applicationMediator,
     std::shared_ptr<MediatorMainCommunicator> mediatorMainCommunicator,
+    std::shared_ptr<MediatorSecondaryCommunicator> mediatorSecondaryCommunicator,
     std::shared_ptr<DroneCommunicator> droneCommunicator
 ) : m_params(params)
 {
-    m_applicationMediator = move(applicationMediator);
+    m_applicationMediator = applicationMediator;
     m_mediatorMainCommunicator = mediatorMainCommunicator;
     m_droneCommunicator = droneCommunicator;
+    m_mediatorSecondaryCommunicator = mediatorSecondaryCommunicator;
 }
 
 GroundStation::~GroundStation()
@@ -257,7 +259,11 @@ void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
     {
         LOG_F(ERROR, "%s", e.what());
         m_applicationMediator->sendMessage(make_unique<PathLaunch_MessageToSend>(false, e.what()));
+        return;
     }
+
+    // If all is good, we can start the "automatic flight" thread
+
 }
 
 void GroundStation::askStopRunning()
