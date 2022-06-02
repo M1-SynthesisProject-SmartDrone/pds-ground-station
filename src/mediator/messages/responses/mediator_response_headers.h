@@ -9,5 +9,6 @@
 #include "TrRegister_MediatorResponse.h"
 #include "PathList_MediatorResponse.h"
 #include "PathOne_MediatorResponse.h"
+#include "TrError_MediatorResponse.h"
 
 #endif // __MEDIATOR_RESPONSE_HEADERS_H__

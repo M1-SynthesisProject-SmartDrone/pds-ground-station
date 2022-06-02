@@ -124,3 +124,8 @@ PathOne_MediatorResponse* MediatorResponseConverter::convertPathOne(nlohmann::js
     resp->depAltitude = document["altitude"];
     return resp;
 }
+
+TrError_MediatorResponse* MediatorResponseConverter::convertTrError(nlohmann::json& document)
+{
+    return new TrError_MediatorResponse();
+}

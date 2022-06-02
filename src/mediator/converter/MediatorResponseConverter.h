@@ -27,6 +27,7 @@ private:
     TrLaunch_MediatorResponse* convertTrLaunch(nlohmann::json& document);
     PathList_MediatorResponse* convertPathList(nlohmann::json& document);
     PathOne_MediatorResponse* convertPathOne(nlohmann::json& document);
+    TrError_MediatorResponse* convertTrError(nlohmann::json& document);
 
     const std::unordered_map<std::string, MEDIATOR_MESSAGE_TYPE> TYPE_FROM_STR {
         {"RESP_TR_SAVE", MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE},
@@ -35,6 +36,7 @@ private:
         {"RESP_TR_LAUNCH", MEDIATOR_MESSAGE_TYPE::RESP_TR_LAUNCH},
         {"RESP_PATH_LIST", MEDIATOR_MESSAGE_TYPE::RESP_PATH_LIST},
         {"RESP_ONE_PATH", MEDIATOR_MESSAGE_TYPE::RESP_PATH_ONE},
+        {"ERROR_NOTIFICATION_RECEIVED", MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR}
     };
 };
 

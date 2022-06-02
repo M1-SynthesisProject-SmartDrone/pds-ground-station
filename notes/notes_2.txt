@@ -20,3 +20,20 @@ Donc autopilot :
         
     
 Donc si anomalie : on locke le thread autopilot et c'est re a ground station de s'occupé 
+
+Sauvegarde pendant le trajet :
+    - On laisse le second thread faire ?
+        * plus ennuyant à gérer, mais on duplique pas le code
+        * Si on duplique le code, on pourra locker toutes les opérations en même temps, 
+        et le thread RegisterPath servirait uniquement lors du contrôle manuel (erreur ou non)
+
+        ==> Tant pis, on duplique le code !
+
+
+Quand le checkpoint est reached
+    - Si suite :
+        * On envoie la photo en cours et celle du checkpoint au comparateur
+        * Pendant qu'il process à côté, on récupère le prochain checkpoint (image et id)
+        * Si il y a une erreur, il va falloir gérer ça
+    - Si dernier point :
+        * On termine le thread, directement

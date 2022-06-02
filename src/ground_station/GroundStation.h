@@ -23,17 +23,19 @@ private:
 
     ConfigParams m_params;
 
+    // ==== Communicators ====
     std::shared_ptr<ApplicationMediator> m_applicationMediator;
     std::shared_ptr<MediatorMainCommunicator> m_mediatorMainCommunicator;
     std::shared_ptr<MediatorSecondaryCommunicator> m_mediatorSecondaryCommunicator;
     std::shared_ptr<DroneCommunicator> m_droneCommunicator;
 
+    // ==== Threads that can be launched ====
     std::unique_ptr<RegisterPath_ThreadClass> m_threadRegister = nullptr;
 
+    // ==== Private methods ====
     void handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMessage> message);
     void handleAckMessage();
     void handleDroneInfosMessage();
-    
     
     void handleRecordMessage(Record_MessageReceived* message);
     bool isRecording();
@@ -46,6 +48,10 @@ private:
     void handlePathListMessage(PathList_MessageReceived* message);
     void handlePathOneMessage(PathOne_MessageReceived* message);
     void handlePathLaunchMessage(PathLaunch_MessageReceived* message);
+
+    bool isInAutopilotMode();
+    
+
 public:
     GroundStation(
         ConfigParams params,
@@ -57,7 +63,7 @@ public:
     ~GroundStation();
 
     /**
-     * The main entry-point method. This is gobally an infinite while loop
+     * The main entry-point method. This is globally an infinite while loop
      */
     void run();
 

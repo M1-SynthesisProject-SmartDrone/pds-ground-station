@@ -253,6 +253,7 @@ void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
 {
     try
     {
+        m_droneCommunicator->arm();
         m_mediatorMainCommunicator->launchPath(message->pathId);
     }
     catch(const std::exception& e)

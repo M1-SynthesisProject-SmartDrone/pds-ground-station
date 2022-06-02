@@ -80,3 +80,13 @@ void MediatorMainCommunicator::launchPath(long pathId)
         throw runtime_error("Launch path failed : assure that the mediator is in a valid state or that given id is right");
     }
 }
+
+void MediatorMainCommunicator::startErrorMode()
+{
+    m_channel.sendAndReceive(make_unique<TrError_MediatorRequest>(), MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR);
+}
+
+void MediatorMainCommunicator::endErrorMode()
+{
+    m_channel.sendAndReceive(make_unique<TrEndError_MediatorRequest>(), MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR);
+}
