@@ -1,8 +1,8 @@
 #ifndef __COORDINATES_H__
 #define __COORDINATES_H__
 
-#include "util/numconvert_utils.hpp"
-#include "util/coordinates_utils.hpp"
+#include "util/numconvert_utils.h"
+#include "util/coordinates_utils.h"
 
 /**
  * A simple point in space defined in polar coordinates, 

@@ -55,15 +55,16 @@ int main(int argc, char* argv[])
         params.mediator.host,
         params.mediator.mainPort
     );
-    auto mediatorSecondaryCommunicator = make_shared<MediatorMainCommunicator>(
+    auto mediatorSecondaryCommunicator = make_shared<MediatorSecondaryCommunicator>(
         params.mediator.host,
         params.mediator.secondaryPort
     );
     auto droneCommunicator = make_shared<DroneCommunicator>();
     groundStation = make_unique<GroundStation>(
         params,
-        move(androidMediator),
-        move(mediatorMainCommunicator),
+        androidMediator,
+        mediatorMainCommunicator,
+        mediatorSecondaryCommunicator,
         droneCommunicator
     );
     

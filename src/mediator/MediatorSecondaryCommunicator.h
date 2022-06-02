@@ -1,5 +1,8 @@
+#ifndef __MEDIATORSECONDARYCOMMUNICATOR_H__
+#define __MEDIATORSECONDARYCOMMUNICATOR_H__
 
 #include <vector>
+#include <tuple>
 
 #include "mediator/MediatorChannel.h"
 #include "mediator/messages/requests/mediator_request_headers.h"
@@ -22,3 +25,5 @@ public:
     std::vector<Coordinates> fetchAllCheckpoints();
     std::tuple<int, std::vector<unsigned char>> fetchNextCheckpoint();
 };
+
+#endif // __MEDIATORSECONDARYCOMMUNICATOR_H__
