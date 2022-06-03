@@ -47,6 +47,8 @@ struct AutopilotInfos_MessageToSend : Abstract_ApplicationToSendMessage
      */ 
     uint16_t yawRotation;
 
+    bool running;
+
     bool errorMode;
 
     bool manualControl;
@@ -75,6 +77,7 @@ struct AutopilotInfos_MessageToSend : Abstract_ApplicationToSendMessage
             {"vy", this->vy},
             {"vz", this->vz},
             {"yawRotation", this->yawRotation},
+            {"running", this->running},
             {"errorMode", this->errorMode},
             {"manualControl", this->manualControl}
         };

@@ -278,7 +278,7 @@ void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
 
 void GroundStation::handleAutopilotInfosMessage(AutopilotInfos_MessageReceived* message)
 {
-    if (!isAutopilotLaunched())
+    if ()
     {
         LOG_F(ERROR, "Asked Autopilot infos, but autopilot is not launched");
         return;
@@ -300,6 +300,7 @@ void GroundStation::handleAutopilotInfosMessage(AutopilotInfos_MessageReceived* 
     infos->yawRotation = droneInfos->yawRotation;
 
     // Add infos relative to autopilot
+    infos->running = !isAutopilotLaunched();
     infos->errorMode = m_threadAutopilot->isInErrorMode;
     infos->manualControl = m_threadAutopilot->hasUserRegainedControl;
     m_applicationMediator->sendMessage(move(infos));
