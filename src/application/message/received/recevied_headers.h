@@ -10,5 +10,8 @@
 #include "PathList_MessageReceived.h"
 #include "PathOne_MessageReceived.h"
 #include "PathLaunch_MessageReceived.h"
+#include "AutopilotInfos_MessageReceived.h"
+#include "RegainControl_MessageReceived.h"
+#include "ResumeAutopilot_MessageReceived.h"
 
 #endif // __RECEVIED_HEADERS_H__

@@ -43,8 +43,7 @@ void Autopilot_ThreadClass::run()
 
         // This will will blocked here if we are in error mode
         unique_lock lock(m_mutex);
-        bool inErrorMode = m_isInErrorMode;
-        m_conditionVariable.wait(lock, [this]{return this->m_isInErrorMode;});
+        conditionVariable.wait(lock, [this]{return this->isInErrorMode;});
 
         registerImage();
 
@@ -55,11 +54,6 @@ void Autopilot_ThreadClass::run()
         }
         onEndLoop();
     }
-}
-
-bool Autopilot_ThreadClass::isInErrorMode() const
-{
-    return m_isInErrorMode;
 }
 
 void Autopilot_ThreadClass::registerImage()
@@ -99,7 +93,7 @@ bool Autopilot_ThreadClass::processAutopilot()
 void Autopilot_ThreadClass::onCheckpointReached()
 {
     // TODO remove point from arkins
-
+    
     if (false) // No point to reach anymore
     {
         LOG_F(INFO, "End of the trip reached, stop the thread");
@@ -113,7 +107,7 @@ void Autopilot_ThreadClass::onCheckpointReached()
         if (hasAnomaly)
         {
             LOG_F(INFO, "Anomaly detected, stop this thread !");
-            m_isInErrorMode = true;
+            isInErrorMode = true;
             m_mainCommunicator->startErrorMode();
         }
     }

@@ -16,7 +16,7 @@ GroundStation::GroundStation(
     std::shared_ptr<MediatorMainCommunicator> mediatorMainCommunicator,
     std::shared_ptr<MediatorSecondaryCommunicator> mediatorSecondaryCommunicator,
     std::shared_ptr<DroneCommunicator> droneCommunicator
-) : m_params(params)
+) : m_params(params), m_threadAutopilot()
 {
     m_applicationMediator = applicationMediator;
     m_mediatorMainCommunicator = mediatorMainCommunicator;
@@ -144,7 +144,12 @@ void GroundStation::handleRecordMessage(Record_MessageReceived* message)
 
 bool GroundStation::isRecording()
 {
-    return m_threadRegister != nullptr;
+    return m_threadRegister != nullptr && m_threadRegister->isRunFlag();
+}
+
+bool GroundStation::isAutopilotLaunched()
+{
+    return m_threadAutopilot != nullptr && m_threadAutopilot->isRunFlag();
 }
 
 void GroundStation::startRecord()
@@ -197,6 +202,11 @@ void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)
 
 void GroundStation::handleManualControlMessage(Manual_MessageReceived* message)
 {
+    if (m_threadAutopilot != nullptr && m_threadAutopilot->isRunFlag() && !m_threadAutopilot->hasUserRegainedControl)
+    {
+        LOG_F(ERROR, "Autopilot is launched and not in error mode");
+        return;
+    }
     try
     {
         m_droneCommunicator->control(
@@ -233,7 +243,7 @@ void GroundStation::handlePathListMessage(PathList_MessageReceived* message)
 void GroundStation::handlePathOneMessage(PathOne_MessageReceived* message)
 {
     auto pathOneResp = m_mediatorMainCommunicator->fetchOnePath(message->pathId);
-    
+
     auto mobileResp = new PathOne_MessageToSend();
     char buffer[16] = { 0 };
     strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&(pathOneResp->date)));
@@ -256,7 +266,7 @@ void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
         m_droneCommunicator->arm();
         m_mediatorMainCommunicator->launchPath(message->pathId);
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         LOG_F(ERROR, "%s", e.what());
         m_applicationMediator->sendMessage(make_unique<PathLaunch_MessageToSend>(false, e.what()));
@@ -264,7 +274,82 @@ void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
     }
 
     // If all is good, we can start the "automatic flight" thread
+}
 
+void GroundStation::handleAutopilotInfosMessage(AutopilotInfos_MessageReceived* message)
+{
+    if (!isAutopilotLaunched())
+    {
+        LOG_F(ERROR, "Asked Autopilot infos, but autopilot is not launched");
+        return;
+    }
+
+    // Always recording in this state
+    auto droneInfos = m_droneCommunicator->fetchDroneInfos(true);
+    auto infos = make_unique<AutopilotInfos_MessageToSend>();
+    infos->alt = droneInfos->alt;
+    infos->batteryRemaining = droneInfos->batteryRemaining;
+    infos->isArmed = droneInfos->isArmed;
+    infos->isRecording = droneInfos->isRecording;
+    infos->lat = droneInfos->lat;
+    infos->lon = droneInfos->lon;
+    infos->relativeAlt = droneInfos->relativeAlt;
+    infos->vx = droneInfos->vx;
+    infos->vy = droneInfos->vy;
+    infos->vz = droneInfos->vz;
+    infos->yawRotation = droneInfos->yawRotation;
+
+    // Add infos relative to autopilot
+    infos->errorMode = m_threadAutopilot->isInErrorMode;
+    infos->manualControl = m_threadAutopilot->hasUserRegainedControl;
+    m_applicationMediator->sendMessage(move(infos));
+}
+
+void GroundStation::handleRegainControlMessage(RegainControl_MessageReceived* message)
+{
+    if (!m_threadAutopilot->isInErrorMode)
+    {
+        m_applicationMediator->sendMessage(make_unique<RegainControl_MessageToSend>(false, "Autopilot is not in error mode"));
+        return;
+    }
+
+    if (m_threadAutopilot->hasUserRegainedControl)
+    {
+        m_applicationMediator->sendMessage(make_unique<RegainControl_MessageToSend>(false, "User already have regained control"));
+        return;
+    }
+
+    m_threadAutopilot->hasUserRegainedControl = true;
+    m_threadRegister = make_unique<RegisterPath_ThreadClass>(
+        m_params.pathRegister.saveFrequency,
+        m_params.pathRegister.savesBetweenCheckpoints,
+        m_droneCommunicator,
+        m_mediatorMainCommunicator
+        );
+    m_threadRegister->start();
+    m_applicationMediator->sendMessage(make_unique<RegainControl_MessageToSend>(true));
+}
+
+void GroundStation::handleResumeAutopilotMessage(ResumeAutopilot_MessageReceived* message)
+{
+    if (!m_threadAutopilot->isInErrorMode || !m_threadAutopilot->hasUserRegainedControl)
+    {
+        m_applicationMediator->sendMessage(make_unique<RegainControl_MessageToSend>(false, "Control was not regained"));
+        return;
+    }
+    m_threadRegister->stop();
+    try
+    {
+        m_mediatorMainCommunicator->endErrorMode();
+        m_threadAutopilot->hasUserRegainedControl = false;
+        m_threadAutopilot->isInErrorMode = false;
+        m_threadAutopilot->conditionVariable.notify_all();
+        m_applicationMediator->sendMessage(make_unique<RegainControl_MessageToSend>(true));
+    }
+    catch(const std::exception& e)
+    {
+        m_applicationMediator->sendMessage(make_unique<RegainControl_MessageToSend>(false, "Unknown error while resuming autopilot"));
+    }
 }
 
 void GroundStation::askStopRunning()

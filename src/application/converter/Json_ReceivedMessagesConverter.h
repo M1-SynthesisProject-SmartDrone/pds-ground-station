@@ -20,6 +20,9 @@ private:
     PathList_MessageReceived* parsePathListRequest(nlohmann::json& obj);
     PathOne_MessageReceived* parsePathOneRequest(nlohmann::json& obj);
     PathLaunch_MessageReceived* parsePathLaunchRequest(nlohmann::json& obj);
+    AutopilotInfos_MessageReceived* parseAutopilotInfosRequest(nlohmann::json& obj);
+    RegainControl_MessageReceived* parseRegainControlRequest(nlohmann::json& obj);
+    ResumeAutopilot_MessageReceived* parseResumeAutopilotRequest(nlohmann::json& obj);
 
     std::function<Abstract_ApplicationReceivedMessage*(nlohmann::json&)> 
         findMessageConverterFunc(nlohmann::json& document);
@@ -42,6 +45,9 @@ private:
         {"PATH_LIST", [this](auto content) {return parsePathListRequest(content);}},
         {"PATH_ONE", [this](auto content) {return parsePathOneRequest(content);}},
         {"PATH_LAUNCH", [this](auto content) {return parsePathLaunchRequest(content);}},
+        {"AUTOPILOT_INFOS", [this](auto content) {return parseAutopilotInfosRequest(content);}},
+        {"REGAIN_CONTROL", [this](auto content) {return parseRegainControlRequest(content);}},
+        {"RESUME_AUTOPILOT", [this](auto content) {return parseResumeAutopilotRequest(content);}},
     };
 public:
     Json_ReceivedMessagesConverter();

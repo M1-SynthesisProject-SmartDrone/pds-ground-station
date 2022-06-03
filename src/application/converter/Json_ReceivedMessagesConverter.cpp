@@ -93,6 +93,21 @@ PathLaunch_MessageReceived* Json_ReceivedMessagesConverter::parsePathLaunchReque
     return new PathLaunch_MessageReceived(pathId);
 }
 
+AutopilotInfos_MessageReceived* Json_ReceivedMessagesConverter::parseAutopilotInfosRequest(nlohmann::json& obj)
+{
+    return new AutopilotInfos_MessageReceived();
+}
+
+RegainControl_MessageReceived* Json_ReceivedMessagesConverter::parseRegainControlRequest(nlohmann::json& obj)
+{
+    return new RegainControl_MessageReceived();
+}
+
+ResumeAutopilot_MessageReceived* Json_ReceivedMessagesConverter::parseResumeAutopilotRequest(nlohmann::json& obj)
+{
+    return new ResumeAutopilot_MessageReceived();
+}
+
 std::function<Abstract_ApplicationReceivedMessage* (nlohmann::json&)>
 Json_ReceivedMessagesConverter::findMessageConverterFunc(nlohmann::json& document)
 {

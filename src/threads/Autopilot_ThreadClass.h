@@ -37,8 +37,6 @@ private:
 
     // ==== misc ====
     std::mutex m_mutex;
-    std::condition_variable m_conditionVariable;
-    bool m_isInErrorMode = false;
 
     // ==== private methods ====
     void registerImage();
@@ -70,7 +68,9 @@ public:
 
     void run();
 
-    bool isInErrorMode() const;
+    std::condition_variable conditionVariable;
+    bool isInErrorMode = false;
+    bool hasUserRegainedControl = false;
 };
 
 #endif // __AUTOPILOT_THREADCLASS_H__

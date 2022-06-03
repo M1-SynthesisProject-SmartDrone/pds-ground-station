@@ -9,6 +9,7 @@
 #include "config/ConfigParams.h"
 
 #include "threads/RegisterPath_ThreadClass.h"
+#include "threads/Autopilot_ThreadClass.h"
 #include "config/ConfigParams.h"
 #include "mediator/MediatorMainCommunicator.h"
 #include "mediator/MediatorSecondaryCommunicator.h"
@@ -20,6 +21,7 @@ class GroundStation
 {
 private:
     bool m_isRunning = true;
+    bool m_isRegainingControl = false;
 
     ConfigParams m_params;
 
@@ -31,6 +33,7 @@ private:
 
     // ==== Threads that can be launched ====
     std::unique_ptr<RegisterPath_ThreadClass> m_threadRegister = nullptr;
+    std::unique_ptr<Autopilot_ThreadClass> m_threadAutopilot = nullptr;
 
     // ==== Private methods ====
     void handleMessage(std::unique_ptr<Abstract_ApplicationReceivedMessage> message);
@@ -49,8 +52,10 @@ private:
     void handlePathOneMessage(PathOne_MessageReceived* message);
     void handlePathLaunchMessage(PathLaunch_MessageReceived* message);
 
-    bool isInAutopilotMode();
-    
+    bool isAutopilotLaunched();
+    void handleAutopilotInfosMessage(AutopilotInfos_MessageReceived* message);
+    void handleRegainControlMessage(RegainControl_MessageReceived* message);
+    void handleResumeAutopilotMessage(ResumeAutopilot_MessageReceived* message);
 
 public:
     GroundStation(
