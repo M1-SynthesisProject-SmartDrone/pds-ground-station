@@ -278,12 +278,6 @@ void GroundStation::handlePathLaunchMessage(PathLaunch_MessageReceived* message)
 
 void GroundStation::handleAutopilotInfosMessage(AutopilotInfos_MessageReceived* message)
 {
-    if ()
-    {
-        LOG_F(ERROR, "Asked Autopilot infos, but autopilot is not launched");
-        return;
-    }
-
     // Always recording in this state
     auto droneInfos = m_droneCommunicator->fetchDroneInfos(true);
     auto infos = make_unique<AutopilotInfos_MessageToSend>();
