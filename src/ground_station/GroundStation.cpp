@@ -155,7 +155,11 @@ bool GroundStation::isAutopilotLaunched()
 void GroundStation::startRecord()
 {
     // Send the message to mediator, then start the famous thread
-    m_mediatorMainCommunicator->startRecord();
+    auto resp = m_mediatorMainCommunicator->startRecord();
+    if (!resp->isLaunched)
+    {
+        throw runtime_error("Start record failed : assure that the mediator is in a valid state");
+    }
 
     m_threadRegister = make_unique<RegisterPath_ThreadClass>(
         m_params.pathRegister.saveFrequency,

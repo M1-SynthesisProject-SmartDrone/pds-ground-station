@@ -22,7 +22,7 @@ unique_ptr<Abstract_MediatorResponse> MediatorChannel::receiveResponse()
 {
     string responseStr = m_socket->receiveMessage();
     auto response = m_converter.convertResponse(responseStr);
-    return unique_ptr<Abstract_MediatorResponse>();
+    return unique_ptr<Abstract_MediatorResponse>(response);
 }
 
 unique_ptr<Abstract_MediatorResponse> MediatorChannel::sendAndReceive(unique_ptr<Abstract_MediatorRequest> request)

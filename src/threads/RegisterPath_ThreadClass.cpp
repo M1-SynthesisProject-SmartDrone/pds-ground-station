@@ -13,8 +13,10 @@ RegisterPath_ThreadClass::RegisterPath_ThreadClass(
     std::shared_ptr<MediatorMainCommunicator> mediatorCommunicator
 ) : SAVE_FREQ(saveFrequency), 
     CHECKPOINT_FREQUENCY(checkpointFrequency),
-    Abstract_ThreadClass("register_path", 1000.0 / (double) SAVE_FREQ, 1000.0 / (double) SAVE_FREQ)
+    Abstract_ThreadClass("register_path", 0, 0)
 {
+    // init here, or undefined values will be put in deadline & period
+    task_deadline = task_period = 1000.0 / (double) SAVE_FREQ;
     m_droneCommunicator = droneCommunicator;
     m_mediatorCommunicator = mediatorCommunicator;
 }
@@ -53,6 +55,7 @@ void RegisterPath_ThreadClass::run()
         {
             auto request = m_droneCommunicator->fetchRegisterData(isCheckpoint);
             auto imageData = m_droneCommunicator->fetchImageData();
+            request->imageSize = imageData.size();  
             m_mediatorCommunicator->registerData(move(request), imageData);
         }
         catch(const std::exception& e)

@@ -45,6 +45,7 @@ void DroneCommunicator::arm(int timeoutMs)
     }
     // We want to reset the command field in order to be able to use it after
     pdsChannels::controlCommands.chars[0] = 0;
+    LOG_F(INFO, "Drone armed");
 }
 
 void DroneCommunicator::disarm(int timeoutMs)
@@ -110,16 +111,6 @@ unique_ptr<TrRegister_MediatorRequest> DroneCommunicator::fetchRegisterData(bool
     data->rotation = pdsChannels::globalPosition.ints32[7];
     data->pressure = pdsChannels::highresImu.floats[9];
     data->temperature = pdsChannels::highresImu.floats[12];
-
-    // // fetch the image
-    // auto imgBuffer = pdsChannels::image.uchars;
-    // const auto rows = pdsChannels::imageSize.uints32[0];
-    // const auto cols = pdsChannels::imageSize.uints32[1];
-    // const auto bufferLength = pdsChannels::imageSize.uints32[2];
-
-    // string encodedImage = encode_base64(imgBuffer, bufferLength);
-
-    // data->image = encodedImage;
 
     auto time = chrono::system_clock::now().time_since_epoch();
     data->time = chrono::duration_cast<chrono::milliseconds>(time).count();

@@ -9,13 +9,15 @@ struct TrRegister_MediatorResponse : Abstract_MediatorResponse
 
     TrRegister_MediatorResponse(bool isDone)
     {
-        this->isDone;
+        this->isDone = isDone;
         this->messageType = MEDIATOR_MESSAGE_TYPE::RESP_TR_REGISTER;
     }
 
     std::string toString()
     {
-        return "TrRegister_MediatorResponse";
+        std::stringstream ss;
+        ss << "TrRegister_MediatorResponse [isDone=" << this->isDone << "]";
+        return ss.str();
     }
 };
 

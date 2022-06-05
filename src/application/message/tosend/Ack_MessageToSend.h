@@ -11,7 +11,7 @@ struct Ack_MessageToSend : Abstract_Answer_MessageToSend
 
     std::string getMessageType()
     {
-        return "ACK";
+        return "RESP_ACK";
     }
 };
 

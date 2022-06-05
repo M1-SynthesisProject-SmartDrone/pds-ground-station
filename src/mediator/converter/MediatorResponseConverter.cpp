@@ -32,9 +32,9 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertResponse(std::strin
 
 MEDIATOR_MESSAGE_TYPE MediatorResponseConverter::findMessageType(nlohmann::json& document)
 {
-    if (document.contains("requestType"))
+    if (document.contains("responseType"))
     {
-        string typeStr = document["requestType"];
+        string typeStr = document["responseType"];
         const auto messageTypeIterator = TYPE_FROM_STR.find(typeStr);
         if (messageTypeIterator != TYPE_FROM_STR.end())
         {
@@ -65,6 +65,21 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertFromMessageType(nlo
     case MEDIATOR_MESSAGE_TYPE::RESP_END_TR_SAVE:
         return convertTrEndSave(document);
         break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_TR_REGISTER:
+        return convertRegister(document);
+        break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_TR_LAUNCH:
+        return convertTrLaunch(document);
+        break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_PATH_LIST:
+        return convertPathList(document);
+        break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_PATH_ONE:
+        return convertPathOne(document);
+        break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR:
+        return convertTrError(document);
+        break;
     default:
         {
             stringstream ss;
@@ -80,9 +95,14 @@ TrSave_MediatorResponse* MediatorResponseConverter::convertTrSave(nlohmann::json
     return new TrSave_MediatorResponse(document["isLaunched"]);
 }
 
+TrRegister_MediatorResponse* MediatorResponseConverter::convertRegister(nlohmann::json& document)
+{
+    return new TrRegister_MediatorResponse(document["isDone"]);
+}
+
 TrEndSave_MediatorResponse* MediatorResponseConverter::convertTrEndSave(nlohmann::json& document)
 {
-    return new TrEndSave_MediatorResponse(document["isLaunched"]);
+    return new TrEndSave_MediatorResponse(document["isDone"]);
 }
 
 Ack_MediatorResponse* MediatorResponseConverter::convertAck(nlohmann::json& document)

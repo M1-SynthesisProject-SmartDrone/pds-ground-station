@@ -159,10 +159,8 @@ bool Abstract_ThreadClass::isRunFlag() const
 void Abstract_ThreadClass::setRunFlag(bool runFlag)
 {
     runFlag_mutex.lock();
-    LOG_F(INFO, "Stop run flag");
     this->runFlag = runFlag;
     runFlag_mutex.unlock();
-
 }
 
 LifeCoreState Abstract_ThreadClass::getCurrentState() const

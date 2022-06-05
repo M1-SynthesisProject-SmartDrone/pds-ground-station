@@ -33,7 +33,8 @@ unique_ptr<TrSave_MediatorResponse> MediatorMainCommunicator::startRecord()
     m_currentTripName = createTripName();
 
     auto responseType = MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE;
-    auto response = m_channel.sendAndReceive(make_unique<TrSave_MediatorRequest>(), responseType);
+    auto r = make_unique<TrSave_MediatorRequest>();
+    auto response = m_channel.sendAndReceive(move(r), responseType);
     return memoryUtils::static_unique_pointer_cast<TrSave_MediatorResponse>(move(response));
 }
 
@@ -54,7 +55,7 @@ void MediatorMainCommunicator::registerData(std::unique_ptr<TrRegister_MediatorR
 
 unique_ptr<TrEndSave_MediatorResponse> MediatorMainCommunicator::endRecord()
 {
-    auto responseType = MEDIATOR_MESSAGE_TYPE::RESP_TR_SAVE;
+    auto responseType = MEDIATOR_MESSAGE_TYPE::RESP_END_TR_SAVE;
     auto response = m_channel.sendAndReceive(make_unique<TrEndSave_MediatorRequest>(m_currentTripName), responseType);
     return memoryUtils::static_unique_pointer_cast<TrEndSave_MediatorResponse>(move(response));
 }
