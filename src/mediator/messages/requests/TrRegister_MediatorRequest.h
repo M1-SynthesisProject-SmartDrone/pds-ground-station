@@ -38,7 +38,7 @@ struct TrRegister_MediatorRequest : Abstract_MediatorRequest
         document["batteryRemaining"] = batteryRemaining;
         document["isCheckpoint"] = isCheckpoint;
         document["time"] = time;
-        document["imageSize"] = imageSize;
+        document["image"] = imageSize;
         return document.dump();
     }
 };
