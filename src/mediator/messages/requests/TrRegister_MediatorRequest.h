@@ -28,7 +28,7 @@ struct TrRegister_MediatorRequest : Abstract_MediatorRequest
 
     std::string toJson()
     {
-        auto document = createBaseDocument("TR_REGISTER");
+        auto document = createBaseDocument("REGISTER");
         document["altitude"] = altitude;
         document["latitude"] = latitude;
         document["longitude"] = longitude;
