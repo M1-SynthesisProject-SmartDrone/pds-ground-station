@@ -11,23 +11,40 @@
 struct Coordinates
 {
     // ==== POLAR COORDNIATES ====
-    float latitude;
-    float longitude;
-    int altitude;
+    float latitude = 0.f;
+    float longitude = 0.f;
+    int altitude = 0.f;
 
     // ==== CARTHESIAN COORDINATES ====
-    float x;
-    float y;
-    float z;
+    float x = 0.f;
+    float y = 0.f;
+    float z = 0.f;
 
-    float rotation;
+    float rotation = 0.f;
 
+    // For calculation 
+    float attraction = 0.f;
+	float distance_to_drone = 0.f;
+
+    Coordinates()
+    {}
 
     /**
      * Converts from the stored format (all ints) to the wanted one 
      * (angle in decimal format for example), then calculate cartesian coordinates.
      */
     Coordinates(int latitude, int longitude, int altitude, int rotation)
+    {
+        this->latitude = numConvertUtils::coordIntToFloat(latitude);
+        this->longitude = numConvertUtils::coordIntToFloat(longitude);
+        this->altitude = altitude;
+        this->rotation = numConvertUtils::angleIntToFloat(rotation);
+
+        coordinatesUtils::polarToCartesian(this->latitude, this->longitude, this->altitude,
+            this->x, this->y, this->z);
+    }
+
+    void update(int latitude, int longitude, int altitude, int rotation)
     {
         this->latitude = numConvertUtils::coordIntToFloat(latitude);
         this->longitude = numConvertUtils::coordIntToFloat(longitude);

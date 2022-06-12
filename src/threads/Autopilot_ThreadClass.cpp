@@ -1,5 +1,7 @@
 #include "Autopilot_ThreadClass.h"
 
+#include <channels/channels.h>
+
 using namespace std;
 
 Autopilot_ThreadClass::Autopilot_ThreadClass(
@@ -41,9 +43,16 @@ void Autopilot_ThreadClass::run()
     {
         onStartLoop();
 
+        m_droneCoordinates.update(
+            pdsChannels::globalPosition.ints32[0],
+            pdsChannels::globalPosition.ints32[1],
+            pdsChannels::globalPosition.ints32[2],
+            pdsChannels::globalPosition.ints32[7]
+        );
+
         // This will will blocked here if we are in error mode
         unique_lock lock(m_mutex);
-        conditionVariable.wait(lock, [this]{return this->isInErrorMode;});
+        conditionVariable.wait(lock, [this] { return this->isInErrorMode; });
 
         registerImage();
 
@@ -87,14 +96,20 @@ void Autopilot_ThreadClass::fetchNextCheckpoint()
 
 bool Autopilot_ThreadClass::processAutopilot()
 {
-    return false;
+    m_arkins->process(m_droneCoordinates);
+    Informations& movementInfos = m_arkins->getInfos();
+    pdsChannels::controlMotors.floats[0] = movementInfos.ratioX;
+    pdsChannels::controlMotors.floats[1] = movementInfos.ratioY;
+    pdsChannels::controlMotors.floats[2] = movementInfos.ratioZ;
+    pdsChannels::controlMotors.floats[3] = movementInfos.ratioR;
+    return movementInfos.inRange;
 }
 
 void Autopilot_ThreadClass::onCheckpointReached()
 {
-    // TODO remove point from arkins
-    
-    if (false) // No point to reach anymore
+    auto& infos = m_arkins->getInfos();
+    m_arkins->deleteAttractivePoint(infos.nearestPointIndex);
+    if (m_arkins->countAttractionPoints() == 0) // No point to reach anymore
     {
         LOG_F(INFO, "End of the trip reached, stop the thread");
         setRunFlag(false);

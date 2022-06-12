@@ -25,6 +25,7 @@ private:
     std::shared_ptr<MediatorSecondaryCommunicator> m_secondaryCommunicator;
 
     // ==== autopilot & image processing ====
+    Coordinates m_droneCoordinates;
     std::vector<Coordinates> m_checkpoints;
     int m_currentCheckpointId;
     std::vector<unsigned char> m_currentCheckpointImage;
