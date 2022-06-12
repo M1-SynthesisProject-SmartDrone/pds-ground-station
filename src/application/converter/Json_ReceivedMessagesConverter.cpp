@@ -64,9 +64,9 @@ DroneInfos_MessageReceived* Json_ReceivedMessagesConverter::parseDroneInfosReque
 
 Manual_MessageReceived* Json_ReceivedMessagesConverter::parseManualRequest(nlohmann::json& obj)
 {
-    double leftMove = obj["y"];
+    double leftMove = obj["x"];
     double leftRotation = obj["r"];
-    double forwardMove = obj["x"];
+    double forwardMove = obj["y"];
     double motorPower = obj["z"];
     return new Manual_MessageReceived{
         leftMove,
