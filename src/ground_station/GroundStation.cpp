@@ -174,13 +174,14 @@ void GroundStation::endRecord()
 {
     m_threadRegister->stop();
     m_mediatorMainCommunicator->endRecord();
+    LOG_F(INFO, "Record ended properly");
 }
 
 void GroundStation::handleStartDroneMessage(Start_MessageReceived* message)
 {
     if (m_droneCommunicator->isArmed() == message->startDrone)
     {
-        m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(false, "Drone is already in wanted state"));
+        m_applicationMediator->sendMessage(make_unique<StartDrone_MessageToSend>(true, "Drone is already in wanted state"));
         return;
     }
 
