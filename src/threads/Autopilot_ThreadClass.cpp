@@ -112,6 +112,7 @@ void Autopilot_ThreadClass::onCheckpointReached()
     if (m_arkins->countAttractionPoints() == 0) // No point to reach anymore
     {
         LOG_F(INFO, "End of the trip reached, stop the thread");
+        m_mainCommunicator->endLaunchPath();
         setRunFlag(false);
     }
     else

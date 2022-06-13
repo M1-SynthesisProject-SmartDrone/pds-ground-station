@@ -82,6 +82,11 @@ void MediatorMainCommunicator::launchPath(long pathId)
     }
 }
 
+void MediatorMainCommunicator::endLaunchPath()
+{
+    auto response = m_channel.sendAndReceive(make_unique<TrEndLaunch_MediatorRequest>(), MEDIATOR_MESSAGE_TYPE::RESP_TR_END_LAUNCH);
+}
+
 void MediatorMainCommunicator::startErrorMode()
 {
     m_channel.sendAndReceive(make_unique<TrError_MediatorRequest>(), MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR);

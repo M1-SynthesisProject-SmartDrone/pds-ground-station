@@ -80,6 +80,9 @@ Abstract_MediatorResponse* MediatorResponseConverter::convertFromMessageType(nlo
     case MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR:
         return convertTrError(document);
         break;
+    case MEDIATOR_MESSAGE_TYPE::RESP_TR_END_LAUNCH:
+        return convertTrEndLaunch(document);
+        break;
     default:
         {
             stringstream ss;
@@ -113,6 +116,11 @@ Ack_MediatorResponse* MediatorResponseConverter::convertAck(nlohmann::json& docu
 TrLaunch_MediatorResponse* MediatorResponseConverter::convertTrLaunch(nlohmann::json& document)
 {
     return new TrLaunch_MediatorResponse(document["isDone"]);
+}
+
+TrEndLaunch_MediatorResponse* MediatorResponseConverter::convertTrEndLaunch(nlohmann::json& document)
+{
+    return new TrEndLaunch_MediatorResponse();
 }
 
 PathList_MediatorResponse* MediatorResponseConverter::convertPathList(nlohmann::json& document)

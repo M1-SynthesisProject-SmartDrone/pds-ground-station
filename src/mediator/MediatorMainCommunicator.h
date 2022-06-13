@@ -31,6 +31,7 @@ public:
     std::unique_ptr<PathOne_MediatorResponse> fetchOnePath(long pathId);
 
     void launchPath(long pathId);
+    void endLaunchPath();
 
     // ==== ERROR ====
     void startErrorMode();

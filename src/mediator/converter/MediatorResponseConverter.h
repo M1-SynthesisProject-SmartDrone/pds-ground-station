@@ -26,6 +26,7 @@ private:
     TrEndSave_MediatorResponse* convertTrEndSave(nlohmann::json& document);
     Ack_MediatorResponse* convertAck(nlohmann::json& document);
     TrLaunch_MediatorResponse* convertTrLaunch(nlohmann::json& document);
+    TrEndLaunch_MediatorResponse* convertTrEndLaunch(nlohmann::json& document);
     PathList_MediatorResponse* convertPathList(nlohmann::json& document);
     PathOne_MediatorResponse* convertPathOne(nlohmann::json& document);
     TrError_MediatorResponse* convertTrError(nlohmann::json& document);
@@ -36,6 +37,7 @@ private:
         {"RESP_END_TR_SAVE", MEDIATOR_MESSAGE_TYPE::RESP_END_TR_SAVE},
         {"ACK", MEDIATOR_MESSAGE_TYPE::RESP_ACK},
         {"RESP_TR_LAUNCH", MEDIATOR_MESSAGE_TYPE::RESP_TR_LAUNCH},
+        {"RESP_END_TR_LAUNCH", MEDIATOR_MESSAGE_TYPE::RESP_TR_END_LAUNCH},
         {"RESP_PATH_LIST", MEDIATOR_MESSAGE_TYPE::RESP_PATH_LIST},
         {"RESP_ONE_PATH", MEDIATOR_MESSAGE_TYPE::RESP_PATH_ONE},
         {"ERROR_NOTIFICATION_RECEIVED", MEDIATOR_MESSAGE_TYPE::RESP_TR_ERROR}

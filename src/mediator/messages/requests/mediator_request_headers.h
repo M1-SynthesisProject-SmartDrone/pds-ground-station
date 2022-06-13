@@ -10,5 +10,6 @@
 #include "PathOne_MediatorRequest.h"
 #include "TrError_MediatorRequest.h"
 #include "TrEndError_MediatorRequest.h"
+#include "TrEndLaunch_MediatorRequest.h"
 
 #endif // __MEDIATOR_REQUEST_HEADERS_H__
