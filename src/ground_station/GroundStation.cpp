@@ -173,6 +173,7 @@ void GroundStation::startRecord()
 void GroundStation::endRecord()
 {
     m_threadRegister->stop();
+    usleep(1000 * 1000);
     m_mediatorMainCommunicator->endRecord();
     LOG_F(INFO, "Record ended properly");
 }

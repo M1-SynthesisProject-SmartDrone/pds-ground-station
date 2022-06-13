@@ -20,7 +20,7 @@ struct TrEndSave_MediatorRequest : Abstract_MediatorRequest
 
     std::string toJson()
     {
-        auto document = createBaseDocument("TR_END_SAVE");
+        auto document = createBaseDocument("END_TR_SAVE");
         document["tripName"] = tripName;
         return document.dump();
     }

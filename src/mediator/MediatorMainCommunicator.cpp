@@ -40,11 +40,14 @@ unique_ptr<TrSave_MediatorResponse> MediatorMainCommunicator::startRecord()
 
 void MediatorMainCommunicator::registerData(std::unique_ptr<TrRegister_MediatorRequest> registerRequest, std::vector<unsigned char>& imageData)
 {
+    LOG_F(INFO, "Register image data");
     auto response = m_channel.sendAndReceive(move(registerRequest), MEDIATOR_MESSAGE_TYPE::RESP_TR_REGISTER);
     auto resp = static_cast<TrRegister_MediatorResponse*>(response.get());
     if (resp->isDone)
     {
+        LOG_F(INFO, "Send image sent");
         m_channel.sendData(imageData);
+        LOG_F(INFO, "Image sent");
         // No response on this last (big) message
     }
     else
@@ -55,6 +58,7 @@ void MediatorMainCommunicator::registerData(std::unique_ptr<TrRegister_MediatorR
 
 unique_ptr<TrEndSave_MediatorResponse> MediatorMainCommunicator::endRecord()
 {
+    LOG_F(INFO, "Send end tr save to mediator");
     auto responseType = MEDIATOR_MESSAGE_TYPE::RESP_END_TR_SAVE;
     auto response = m_channel.sendAndReceive(make_unique<TrEndSave_MediatorRequest>(m_currentTripName), responseType);
     return memoryUtils::static_unique_pointer_cast<TrEndSave_MediatorResponse>(move(response));

@@ -55,6 +55,7 @@ int main(int argc, char* argv[])
         params.mediator.host,
         params.mediator.mainPort
     );
+    usleep(1000 * 1000);
     auto mediatorSecondaryCommunicator = make_shared<MediatorSecondaryCommunicator>(
         params.mediator.host,
         params.mediator.secondaryPort
