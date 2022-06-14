@@ -9,7 +9,7 @@ struct PathOne_MediatorResponse : Abstract_MediatorResponse
     long id;
     int nbPoints;
     int nbCheckpoints;
-    time_t date;
+    std::string date;
     int depLatitude;
     int depLongitude;
     int depAltitude;

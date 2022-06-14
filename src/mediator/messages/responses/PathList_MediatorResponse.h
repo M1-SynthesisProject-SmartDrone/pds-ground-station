@@ -9,7 +9,7 @@ struct RespPathList_Item
 {
     std::string name;
     long id;
-    time_t timestamp;
+    std::string date;
 };
 
 struct PathList_MediatorResponse : Abstract_MediatorResponse

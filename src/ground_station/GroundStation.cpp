@@ -234,12 +234,10 @@ void GroundStation::handlePathListMessage(PathList_MessageReceived* message)
     auto mobileResp = new PathList_MessageToSend();
     for (const auto& mediatorItem : pathListResp->paths)
     {
-        char buffer[16] = { 0 };
-        strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&mediatorItem.timestamp));
         PathList_Path pathItem{
             mediatorItem.name,
             mediatorItem.id,
-            string(buffer)
+            mediatorItem.date
         };
         mobileResp->paths.push_back(pathItem);
     }
@@ -251,9 +249,7 @@ void GroundStation::handlePathOneMessage(PathOne_MessageReceived* message)
     auto pathOneResp = m_mediatorMainCommunicator->fetchOnePath(message->pathId);
 
     auto mobileResp = new PathOne_MessageToSend();
-    char buffer[16] = { 0 };
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&(pathOneResp->date)));
-    mobileResp->date = string(buffer);
+    mobileResp->date = pathOneResp->date;
     mobileResp->id = pathOneResp->id;
     mobileResp->name = pathOneResp->name;
     mobileResp->nbCheckpoints = pathOneResp->nbCheckpoints;

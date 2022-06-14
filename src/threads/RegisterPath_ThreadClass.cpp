@@ -55,8 +55,12 @@ void RegisterPath_ThreadClass::run()
         {
             auto request = m_droneCommunicator->fetchRegisterData(isCheckpoint);
             auto imageData = m_droneCommunicator->fetchImageData();
-            request->imageSize = imageData.size();  
+            request->imageSize = imageData.size();
+            auto start = chrono::steady_clock::now();
             m_mediatorCommunicator->registerData(move(request), imageData);
+            auto end = chrono::steady_clock::now();
+            auto elapsed = chrono::duration_cast<chrono::microseconds>(end - start).count();
+            LOG_F(INFO, "Image sent in %ld microseconds", elapsed);
         }
         catch(const std::exception& e)
         {
